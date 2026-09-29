@@ -1,5 +1,6 @@
 import type { Metadata } from 'next';
 import '../globals.css';
+import '../internal.css';
 
 export const metadata: Metadata = {
   title: 'Nomad Discovery Tours — Kyrgyzstan, beyond the ordinary',

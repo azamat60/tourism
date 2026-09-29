@@ -1,5 +1,6 @@
 import { isLocale } from '@/lib/content';
 import '../../globals.css';
+import '../../internal.css';
 
 export default async function LocaleLayout({ children, params }: Readonly<{
   children: React.ReactNode;

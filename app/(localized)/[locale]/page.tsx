@@ -13,7 +13,7 @@ export async function generateMetadata({ params }: { params: Promise<{ locale: s
   return {
     title: `${content[locale].heroTitle} | Nomad Discovery Tours`,
     description: content[locale].heroDescription,
-    alternates: { languages: Object.fromEntries(locales.map((language) => [language === 'ge' ? 'ka' : language, `/${language}/`])) },
+    alternates: { languages: Object.fromEntries(locales.map((language) => [language === 'ge' ? 'de' : language, `/${language}/`])) },
   };
 }
 

@@ -27,7 +27,7 @@ svg{display:block}
 .language-picker summary{display:flex;align-items:center;gap:7px;list-style:none;padding:14px 2px}
 .language-picker summary::-webkit-details-marker,.mobile-menu summary::-webkit-details-marker{display:none}
 .globe{font-size:25px;line-height:0;font-weight:400;margin-right:2px}
-.chevron{font-size:17px;font-weight:400;line-height:0;margin-left:2px}
+.chevron{width:16px;height:16px;flex:none;margin-left:2px}
 .language-menu{position:absolute;top:calc(100% + 4px);right:-14px;width:190px;background:var(--paper);box-shadow:0 20px 45px #10251c24;border:1px solid #e6e4da;padding:8px;max-height:340px;overflow:auto}
 .language-menu a{display:flex;justify-content:space-between;align-items:center;padding:10px 12px;font-size:13px;letter-spacing:0;font-weight:500}
 .language-menu a:hover,.language-menu a[aria-current=page]{background:#e8ede5}
