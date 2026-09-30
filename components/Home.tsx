@@ -1,6 +1,7 @@
 import Image from 'next/image';
 import type { Copy, Locale } from '@/lib/content';
 import SiteChrome, { ArrowIcon, MountainMark, WhatsAppIcon, localeHref, whatsappLink } from '@/components/SiteChrome';
+import { expandedCopy } from '@/lib/expandedCopy';
 
 function TourCard({ image, number, title, place, tag, description, days, slug, locale, copy }: {
   image: string; number: string; title: string; place: string; tag: string; description: string; days: number; slug: string; locale: Locale; copy: Copy;
@@ -52,6 +53,7 @@ export default function Home({ locale, copy }: { locale: Locale; copy: Copy }) {
               <TourCard image="/images/kel-suu.jpg" number="02" title={copy.tour2Title} place={copy.tour2Place} tag={copy.tour2Tag} description={copy.tour2Description} days={5} slug="kel-suu-wilderness" locale={locale} copy={copy} />
               <TourCard image="/images/hero.jpg" number="03" title={copy.tour3Title} place={copy.tour3Place} tag={copy.tour3Tag} description={copy.tour3Description} days={7} slug="nomad-trail" locale={locale} copy={copy} />
             </div>
+            <div className="journey-actions"><a className="text-link" href={localeHref(locale, '/tours/')}>{expandedCopy[locale].allTours}<ArrowIcon diagonal /></a><a className="text-link" href={localeHref(locale, '/departures/')}>{expandedCopy[locale].datesTitle}<ArrowIcon diagonal /></a></div>
           </div>
         </section>
 

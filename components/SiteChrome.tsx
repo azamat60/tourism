@@ -2,6 +2,7 @@ import type { ReactNode } from 'react';
 import type { Copy, Locale } from '@/lib/content';
 import { languageNames, locales } from '@/lib/content';
 import { localeHref, whatsappLink } from '@/lib/links';
+import { expandedCopy } from '@/lib/expandedCopy';
 
 export { localeHref, whatsappLink } from '@/lib/links';
 
@@ -39,16 +40,18 @@ export function WhatsAppIcon() {
 function Header({ locale, copy, path }: { locale: Locale; copy: Copy; path: string }) {
   const home = localeHref(locale);
   const plan = localeHref(locale, '/plan/');
+  const ui = expandedCopy[locale];
 
   return (
     <header className="site-header">
       <div className="header-inner">
         <a className="brand" href={home} aria-label="Nomad Discovery Tours home"><MountainMark /><BrandName /></a>
         <nav className="desktop-nav" aria-label="Main navigation">
-          <a href={`${home}#journeys`}>{copy.navJourneys}</a>
-          <a href={`${home}#about`}>{copy.navAbout}</a>
-          <a href={`${home}#experience`}>{copy.navExperience}</a>
-          <a href={`${home}#contact`}>{copy.navContact}</a>
+          <a href={localeHref(locale, '/tours/')}>{ui.navTours}</a>
+          <a href={localeHref(locale, '/departures/')}>{ui.navDates}</a>
+          <a href={localeHref(locale, '/about/')}>{copy.navAbout}</a>
+          <a href={localeHref(locale, '/faq/')}>{ui.navFaq}</a>
+          <a href={localeHref(locale, '/journal/')}>{ui.navJournal}</a>
         </nav>
         <div className="header-actions">
           <details className="language-picker">
@@ -61,11 +64,13 @@ function Header({ locale, copy, path }: { locale: Locale; copy: Copy; path: stri
           <details className="mobile-menu">
             <summary aria-label={copy.menu}><span /><span /><span /></summary>
             <nav aria-label="Mobile navigation">
-              <a href={`${home}#journeys`}>{copy.navJourneys}</a>
-              <a href={`${home}#about`}>{copy.navAbout}</a>
-              <a href={`${home}#experience`}>{copy.navExperience}</a>
+              <a href={localeHref(locale, '/tours/')}>{ui.navTours}</a>
+              <a href={localeHref(locale, '/departures/')}>{ui.navDates}</a>
+              <a href={localeHref(locale, '/about/')}>{copy.navAbout}</a>
+              <a href={localeHref(locale, '/faq/')}>{ui.navFaq}</a>
+              <a href={localeHref(locale, '/journal/')}>{ui.navJournal}</a>
               <a href={plan}>{copy.planTrip}</a>
-              <a href={`${home}#contact`}>{copy.navContact}</a>
+              <a href={localeHref(locale, '/booking/')}>{ui.navBooking}</a>
             </nav>
           </details>
         </div>
@@ -76,8 +81,9 @@ function Header({ locale, copy, path }: { locale: Locale; copy: Copy; path: stri
 
 function Footer({ locale, copy }: { locale: Locale; copy: Copy }) {
   const home = localeHref(locale);
+  const ui = expandedCopy[locale];
   return (
-    <footer className="footer"><div className="page-width"><div className="footer-main"><div><a className="brand footer-brand" href={home}><MountainMark /><BrandName /></a><p>{copy.footerLine}</p></div><div className="footer-links"><div><h3>{copy.footerExplore}</h3><a href={`${home}#journeys`}>{copy.navJourneys}</a><a href={`${home}#about`}>{copy.navAbout}</a><a href={`${home}#experience`}>{copy.navExperience}</a></div><div><h3>{copy.footerConnect}</h3><a href="tel:+996559773283">+996 559 773 283</a><a href={whatsappLink(copy.inquiryMessage)} target="_blank" rel="noopener noreferrer">WhatsApp</a></div></div></div><div className="footer-bottom"><span>© {new Date().getFullYear()} Nomad Discovery Tours. {copy.rights}</span><span>KYRGYZSTAN · 42°52′ N 74°36′ E</span></div></div></footer>
+    <footer className="footer"><div className="page-width"><div className="footer-main"><div><a className="brand footer-brand" href={home}><MountainMark /><BrandName /></a><p>{copy.footerLine}</p></div><div className="footer-links"><div><h3>{copy.footerExplore}</h3><a href={localeHref(locale, '/tours/')}>{ui.navTours}</a><a href={localeHref(locale, '/departures/')}>{ui.navDates}</a><a href={localeHref(locale, '/about/')}>{copy.navAbout}</a><a href={localeHref(locale, '/faq/')}>{ui.navFaq}</a><a href={localeHref(locale, '/journal/')}>{ui.navJournal}</a></div><div><h3>{copy.footerConnect}</h3><a href={localeHref(locale, '/booking/')}>{ui.navBooking}</a><a href="tel:+996559773283">+996 559 773 283</a><a href={whatsappLink(copy.inquiryMessage)} target="_blank" rel="noopener noreferrer">WhatsApp</a></div></div></div><div className="footer-bottom"><span>© {new Date().getFullYear()} Nomad Discovery Tours. {copy.rights}</span><span>KYRGYZSTAN · 42°52′ N 74°36′ E</span></div></div></footer>
   );
 }
 
