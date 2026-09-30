@@ -66,8 +66,9 @@ svg{display:block}
 .section-head .eyebrow{margin-bottom:17px}.section-head h2{font-size:clamp(47px,4.4vw,70px);line-height:1.05;margin:0}
 .section-head>p{max-width:360px;color:#67736a;font-size:14px;line-height:1.8;margin:0 0 8px}
 .tour-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:23px}
-.tour-card{background:#fff;border:1px solid #e7e6df;min-width:0;transition:box-shadow .25s,transform .25s}
+.tour-card{display:block;background:#fff;border:1px solid #e7e6df;min-width:0;transition:box-shadow .25s,transform .25s}
 .tour-card:hover{transform:translateY(-5px);box-shadow:0 25px 50px #23342913}
+.tour-card:focus-visible{outline:3px solid #487b51;outline-offset:4px}
 .tour-image-wrap{height:280px;position:relative;overflow:hidden;background:#b0b9aa}
 .tour-image-wrap img{height:100%;width:100%;object-fit:cover;transition:transform .5s}.tour-card:hover img{transform:scale(1.045)}
 .tour-tag{position:absolute;top:17px;left:17px;background:#f6f4eb;color:#2d4d39;font-size:9px;font-weight:700;letter-spacing:.16em;padding:10px 12px}
@@ -76,7 +77,7 @@ svg{display:block}
 .tour-heading{display:flex;align-items:baseline;gap:12px;margin:17px 0 10px}.tour-number{font-size:11px;color:#91a190}.tour-heading h3{font-family:Georgia,'Times New Roman',serif;font-weight:400;font-size:32px;letter-spacing:-.05em;line-height:1.12;margin:0}
 .tour-info p{color:#68756b;font-size:13px;line-height:1.8;min-height:70px;margin:0 0 20px}
 .text-link{display:flex;justify-content:space-between;align-items:center;border-top:1px solid #e6e9e0;padding-top:17px;color:#294934;text-transform:uppercase;letter-spacing:.09em;font-weight:700;font-size:10px}
-.text-link svg{width:16px;height:16px;transition:transform .2s}.text-link:hover svg{transform:translate(3px,-3px)}
+.text-link svg{width:16px;height:16px;transition:transform .2s}.tour-card:hover .text-link svg,.tour-card:focus-visible .text-link svg{transform:translate(3px,-3px)}
 .philosophy{background:#e9ece4}
 .philosophy-grid{display:grid;grid-template-columns:1fr 1fr;gap:clamp(75px,11vw,180px)}
 .philosophy-title h2{font-size:clamp(44px,4.15vw,67px);line-height:1.1;max-width:630px;margin:0 0 28px}

@@ -6,7 +6,7 @@ function TourCard({ image, number, title, place, tag, description, days, slug, l
   image: string; number: string; title: string; place: string; tag: string; description: string; days: number; slug: string; locale: Locale; copy: Copy;
 }) {
   return (
-    <article className="tour-card">
+    <a className="tour-card" href={localeHref(locale, `/tours/${slug}/`)} aria-label={`${copy.viewJourney}: ${title}`}>
       <div className="tour-image-wrap">
         <Image src={image} alt={place} width={1448} height={1086} sizes="(max-width: 680px) 100vw, 33vw" />
         <span className="tour-tag">{tag}</span>
@@ -15,9 +15,9 @@ function TourCard({ image, number, title, place, tag, description, days, slug, l
         <div className="tour-meta"><span>{place}</span><span>{days} {copy.days}</span></div>
         <div className="tour-heading"><span className="tour-number">{number}</span><h3>{title}</h3></div>
         <p>{description}</p>
-        <a className="text-link" href={localeHref(locale, `/tours/${slug}/`)}>{copy.viewJourney}<ArrowIcon diagonal /></a>
+        <span className="text-link">{copy.viewJourney}<ArrowIcon diagonal /></span>
       </div>
-    </article>
+    </a>
   );
 }
 
