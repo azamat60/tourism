@@ -1,0 +1,202 @@
+[
+  {
+    "id": "38",
+    "image": "Yurt.webp",
+    "endDate": "2026-10-30T03:00:00Z",
+    "customDeposit": null,
+    "peopleBooked": 6,
+    "Locations": [
+      "Song-Kul",
+      "Skazka Canyon",
+      "Issyk Kul",
+      "Karakol"
+    ],
+    "active": true,
+    "tourName": "5 Day Song-Kul, Karakol, & Skazka Canyon Adventure",
+    "moreInfo": "5-day-song-kul-karakol",
+    "Prices": {
+      "1": 1200,
+      "2": 1050,
+      "3": 900,
+      "4": 800,
+      "5": 800,
+      "6": 800,
+      "7": 800,
+      "8": 800
+    },
+    "tourSlug": "5-day-song-kul-karakol",
+    "minorDescription": "A packed trip through Song-Kul and Karakol",
+    "maxPeople": 8,
+    "startDate": "2026-10-26T03:00:00Z",
+    "status": "active"
+  },
+  {
+    "id": "9-day-song-kul-kel-suu-issyk-kul-skazka-karakol-altyn",
+    "image": "KelSuu1.JPG",
+    "endDate": "2027-06-09T03:00:00Z",
+    "customDeposit": null,
+    "peopleBooked": 7,
+    "Locations": [
+      "Song-Kul",
+      "Issyk Kul",
+      "Kel-Suu",
+      "Skazka Canyon",
+      "Karakol",
+      "Altyn Arashan"
+    ],
+    "active": true,
+    "tourName": "9 Day Song-Kul / Issyk Kul / Kel Suu / Skazka / Karakol / Altyn Arashan Tour",
+    "moreInfo": "9-day-song-kul-kel-suu-issyk-kul-skazka-karakol-altyn",
+    "Prices": {
+      "1": 1950,
+      "2": 1700,
+      "3": 1600,
+      "4": 1500,
+      "5": 1550,
+      "6": 1500,
+      "7": 1500,
+      "8": 1500
+    },
+    "tourSlug": "9-day-song-kul-kel-suu-issyk-kul-skazka-karakol-altyn",
+    "minorDescription": "",
+    "maxPeople": 8,
+    "startDate": "2027-06-01T03:00:00Z",
+    "status": "active"
+  },
+  {
+    "id": "dep_3-day-song-kul-lake-ride_2026-10-19",
+    "image": "SongKulHorse.webp",
+    "endDate": "2026-10-21T00:00:00Z",
+    "customDeposit": null,
+    "peopleBooked": 2,
+    "Locations": [
+      "Song-Kul"
+    ],
+    "active": true,
+    "tourName": "3-Day Song-Kul Lake Ride",
+    "moreInfo": "",
+    "Prices": {
+      "1": 590,
+      "2": "360",
+      "3": "320",
+      "4": "310",
+      "5": 310,
+      "6": 310
+    },
+    "tourSlug": "",
+    "minorDescription": "",
+    "maxPeople": 6,
+    "startDate": "2026-10-19T00:00:00Z",
+    "status": "active"
+  },
+  {
+    "id": "dep_3-day-song-kul-lake-ride_2026-11-13",
+    "image": "SongKulHorse.webp",
+    "endDate": "2026-11-15T00:00:00Z",
+    "customDeposit": null,
+    "peopleBooked": 1,
+    "Locations": [
+      "Song-Kul"
+    ],
+    "active": true,
+    "tourName": "3-Day Song-Kul Lake Ride",
+    "moreInfo": "3-day-song-kul-lake-ride",
+    "Prices": {
+      "1": 590,
+      "2": "360",
+      "3": "320",
+      "4": "310",
+      "5": 310,
+      "6": 310
+    },
+    "tourSlug": "3-day-song-kul-lake-ride",
+    "minorDescription": "",
+    "maxPeople": 6,
+    "startDate": "2026-11-13T00:00:00Z",
+    "status": "active"
+  },
+  {
+    "id": "dep_5-day-song-kul-karakol_2026-10-18",
+    "image": "Horse5.webp",
+    "endDate": "2026-10-22T00:00:00Z",
+    "customDeposit": null,
+    "peopleBooked": 2,
+    "Locations": [
+      "Song-Kul",
+      "Skazka Canyon",
+      "Issyk Kul",
+      "Karakol"
+    ],
+    "active": true,
+    "tourName": "5 Day Song-Kul, Karakol, & Skazka Canyon Adventure",
+    "moreInfo": "5-day-song-kul-karakol",
+    "Prices": {
+      "1": "1200",
+      "2": "1050",
+      "3": "900",
+      "4": 850
+    },
+    "tourSlug": "5-day-song-kul-karakol",
+    "minorDescription": "",
+    "maxPeople": 6,
+    "startDate": "2026-10-18T00:00:00Z",
+    "status": "active"
+  },
+  {
+    "id": "dep_9-day-song-kul-kel-suu-issyk-kul-skazka-karakol-altyn_2027-06-29",
+    "image": "KelSuu1.JPG",
+    "endDate": "2027-07-07T00:00:00Z",
+    "customDeposit": null,
+    "peopleBooked": 1,
+    "Locations": [
+      "Song-Kul",
+      "Issyk Kul",
+      "Kel-Suu",
+      "Skazka Canyon",
+      "Karakol",
+      "Altyn Arashan"
+    ],
+    "active": true,
+    "tourName": "9 Day Song-Kul / Issyk Kul / Kel Suu / Skazka / Karakol / Altyn Arashan Tour",
+    "moreInfo": "9-day-song-kul-kel-suu-issyk-kul-skazka-karakol-altyn",
+    "Prices": {
+      "1": "1950",
+      "2": "1700",
+      "3": "1600",
+      "4": "1500"
+    },
+    "tourSlug": "9-day-song-kul-kel-suu-issyk-kul-skazka-karakol-altyn",
+    "minorDescription": "",
+    "maxPeople": 6,
+    "startDate": "2027-06-29T00:00:00Z",
+    "status": "active"
+  },
+  {
+    "id": "dtIUJcyqyrsRuMR5jMBm",
+    "image": "Horse7.webp",
+    "endDate": "2026-10-29T11:00:00Z",
+    "customDeposit": 70,
+    "peopleBooked": 2,
+    "Locations": [
+      "Song-Kul",
+      "Skazka Canyon",
+      "Issyk Kul"
+    ],
+    "active": true,
+    "tourName": "2 Day Song-Kul + 1 Day Eagle Hunting and Skazka Canyon Trip (CUSTOM)",
+    "moreInfo": "custom-private-tour",
+    "Prices": {
+      "1": 530,
+      "2": 530,
+      "3": 490,
+      "4": 470,
+      "5": 460,
+      "6": 450
+    },
+    "tourSlug": "custom-private-tour",
+    "minorDescription": "Custom Itinerary:\n- Monday October 26th: Late Afternoon Pickup from Bishkek, driving to guest house near our office (https://maps.app.goo.gl/tTv2ZDCd4qWsAM3D7). \n- Tuesday October 27th: Begin horse ride to Song Kul Lake. Stay in Yurt overnight\n- Wednesday October 28th: Return by horse to Kyzart area, begin drive to Bokonbaevo\n- Thursday October 29th: Watch an Eagle Hunting Demonstration, then after, visit Skazka Canyon. Return to Bishkek in Evening",
+    "maxPeople": 6,
+    "startDate": "2026-10-26T03:00:00Z",
+    "status": "active"
+  }
+]

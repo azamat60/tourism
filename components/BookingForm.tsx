@@ -1,64 +1,43 @@
 'use client';
 
-import { useState, useSyncExternalStore } from 'react';
-import Image from 'next/image';
+import { translate as t } from '@/lib/i18n';
+
+import { useState, type FormEvent } from 'react';
 import type { Locale } from '@/lib/content';
-import { content } from '@/lib/content';
-import { formatDepartureDate, sampleDepartures } from '@/lib/departures';
-import { expandedCopy } from '@/lib/expandedCopy';
-import { whatsappLink } from '@/lib/links';
-import { isTourSlug, tourBasics, tourSlugs, type TourSlug } from '@/lib/tours';
-import { ArrowIcon } from './SiteChrome';
-
-function subscribeToLocation(callback: () => void) {
-  window.addEventListener('popstate', callback);
-  return () => window.removeEventListener('popstate', callback);
-}
-
-function currentQuery() {
-  return window.location.search;
-}
-
-function serverQuery() {
-  return '';
-}
+import { activeTours, getTour, shiftDate, validDate } from '@/lib/mock-data';
+import { useBishkekDay, useBrowserQuery } from '@/lib/browser-state';
+import { localeHref } from '@/lib/links';
+import { storeInquiry } from '@/lib/mock-service';
+import { site } from '@/lib/mocks/site.mock';
 
 export default function BookingForm({ locale }: { locale: Locale }) {
-  const copy = content[locale];
-  const ui = expandedCopy[locale];
-  const query = useSyncExternalStore(subscribeToLocation, currentQuery, serverQuery);
-  const queryParams = new URLSearchParams(query);
-  const queryTour = queryParams.get('tour') || '';
-  const queryDate = queryParams.get('date') || '';
-  const [tourChoice, setTourChoice] = useState<TourSlug | '' | null>(null);
-  const [dateChoice, setDateChoice] = useState<string | null>(null);
-  const tour = tourChoice ?? (isTourSlug(queryTour) ? queryTour : '');
-  const date = dateChoice ?? (/^\d{4}-\d{2}-\d{2}$/.test(queryDate) ? queryDate : '');
-  const [name, setName] = useState('');
-  const [email, setEmail] = useState('');
-  const [phone, setPhone] = useState('');
-  const [guests, setGuests] = useState(2);
-  const [message, setMessage] = useState('');
-  const selected = tour ? tourBasics(copy, tour) : null;
-  const selectedDeparture = sampleDepartures.find((item) => item.tour === tour && item.start === date);
-  const ready = Boolean(tour && date && name.trim() && phone.trim() && guests > 0);
-  const requestText = [
-    copy.inquiryMessage,
-    `${ui.tour}: ${selected?.title ?? ''}`,
-    `${ui.date}: ${date ? formatDepartureDate(locale, date) : ''}`,
-    `${ui.guests}: ${guests}`,
-    `${ui.name}: ${name.trim()}`,
-    `${ui.phone}: ${phone.trim()}`,
-    email.trim() ? `${ui.email}: ${email.trim()}` : '',
-    message.trim() ? `${ui.message}: ${message.trim()}` : '',
-  ].filter(Boolean).join('\n');
+  const params = useBrowserQuery();
+  const today = useBishkekDay();
+  return <InquiryForm key={params.toString()} locale={locale} today={today} tour={getTour(params.get('tour') || '')?.title || params.get('tour') || ''} date={params.get('date') || ''} message={params.get('message') || ''} />;
+}
 
+function InquiryForm({ locale, today, tour, date, message }: { locale: Locale; today: string; tour: string; date: string; message: string }) {
+  const [error, setError] = useState('');
+  const [pending, setPending] = useState(false);
+  async function submit(event: FormEvent<HTMLFormElement>) {
+    event.preventDefault(); setError('');
+    const data = new FormData(event.currentTarget);
+    const value = (key: string) => String(data.get(key) || '').trim();
+    if (value('_gotcha')) return;
+    if (!/^\+?[1-9]\d{6,14}$/.test(value('whatsappNumber').replace(/[\s\-()]/g, ''))) { setError('Please enter a valid WhatsApp number.'); return; }
+    if (!validDate(value('date')) || value('date') < today || value('date') > shiftDate(today, 730)) { setError('Please select a date between today and 2 years from now.'); return; }
+    setPending(true);
+    try {
+      const id = storeInquiry({ name: value('name'), email: value('email'), whatsappNumber: value('whatsappNumber'), date: value('date'), tour: value('tour'), message: value('message') });
+      window.location.assign(localeHref(locale, `/success/?requestId=${id}`));
+    } catch { setError('Your request could not be saved in this browser. Please allow browser storage and try again.'); setPending(false); }
+  }
   return <div className="page-width booking-layout">
-    <div className="booking-fields"><div className="booking-heading"><span>01 / 02</span><h2>{ui.bookingTitle}</h2></div>
-      <div className="booking-field-grid"><label>{ui.tour}<select value={tour} onChange={(event) => setTourChoice(event.target.value as TourSlug | '')} required><option value="">{ui.allTours}</option>{tourSlugs.map((slug) => <option key={slug} value={slug}>{tourBasics(copy, slug).title}</option>)}</select></label><label>{ui.date}<input type="date" value={date} onChange={(event) => setDateChoice(event.target.value)} required /></label><label>{ui.name}<input type="text" autoComplete="name" value={name} onChange={(event) => setName(event.target.value)} required /></label><label>{ui.phone}<input type="tel" autoComplete="tel" value={phone} onChange={(event) => setPhone(event.target.value)} required /></label><label>{ui.email} <small>{ui.optional}</small><input type="email" autoComplete="email" value={email} onChange={(event) => setEmail(event.target.value)} /></label><label>{ui.guests}<input type="number" min="1" max="20" value={guests} onChange={(event) => setGuests(Math.max(1, Math.min(20, Number(event.target.value) || 1)))} required /></label><label className="wide">{ui.message} <small>{ui.optional}</small><textarea rows={5} value={message} onChange={(event) => setMessage(event.target.value)} /></label></div>
-    </div>
-    <aside className="booking-summary"><span className="booking-step">02 / 02</span>{selected ? <><div className="booking-photo"><Image src={selected.image} alt={selected.place} width={1448} height={1086} sizes="(max-width: 900px) 100vw, 360px" /></div><p className="eyebrow light"><span className="eyebrow-line" />{selected.place}</p><h2>{selected.title}</h2><div className="booking-facts"><div><span>{ui.date}</span><strong>{date ? formatDepartureDate(locale, date) : '—'}</strong></div><div><span>{ui.guests}</span><strong>{guests}</strong></div>{selectedDeparture && <div><span>{ui.price}</span><strong>${selectedDeparture.price}</strong></div>}</div></> : <><span className="booking-placeholder">✳</span><h2>{ui.tour}</h2><p>{ui.bookingIntro}</p></>}
-      {ready ? <a className="button button-light" href={whatsappLink(requestText)} target="_blank" rel="noopener noreferrer">{ui.sendRequest}<ArrowIcon diagonal /></a> : <span className="button button-light booking-disabled" aria-disabled="true">{ui.sendRequest}<ArrowIcon diagonal /></span>}{selectedDeparture && <p className="booking-note">{ui.demoNotice}</p>}<p className="booking-note">{ui.bookingNote}</p>
-    </aside>
+    <form className="booking-fields" onSubmit={submit}><div className="booking-heading"><h2>{t(locale, "Send us a message")}</h2></div><p>{t(locale, "Include the dates you're interested in, how many people are travelling and anything else we should know.")}</p>
+      <input name="_gotcha" className="source-honeypot" tabIndex={-1} autoComplete="off" aria-hidden="true" />
+      <div className="booking-field-grid"><label>{t(locale, "Your name")}<input name="name" autoComplete="name" placeholder={t(locale, "Full name")} required maxLength={100} /></label><label>{t(locale, "Email")}<input name="email" type="email" autoComplete="email" placeholder="you@email.com" required /></label><label>{t(locale, "WhatsApp number")}<input name="whatsappNumber" type="tel" autoComplete="tel" placeholder="+1 555 123 4567" required /></label><label>{t(locale, "Anticipated tour date")}<input name="date" type="date" min={today} max={shiftDate(today, 730)} defaultValue={validDate(date) ? date : ''} required /></label><label className="wide">{t(locale, "Tour")}<select name="tour" defaultValue={tour.includes('(CUSTOM)') ? 'Custom Private Tour' : tour} required><option value="">{t(locale, "Select Tour")}</option>{activeTours.toSorted((a, b) => a.title.localeCompare(b.title)).map((item) => <option key={item.slug} value={item.title}>{t(locale, item.title)}</option>)}</select></label><label className="wide">{t(locale, "Your message")}<textarea name="message" rows={5} defaultValue={message} placeholder={t(locale, "Your Message. Include dates interested, number of people, and any other important information.")} maxLength={5000} required /></label></div>
+      <p className="source-note">{t(locale, site.mockNotice)}</p>{error && <p role="alert" className="source-error">{t(locale, error)}</p>}<button type="submit" className="button button-dark" disabled={pending}>{t(locale, pending ? 'Saving...' : 'Send Message')}</button>
+    </form>
+    <aside className="source-aside"><h2>{t(locale, "What happens next?")}</h2><ol>{site.bookingSteps.map((item) => <li key={item.title}><strong>{t(locale, item.title)}</strong><p>{t(locale, item.text)}</p></li>)}</ol><h3>{t(locale, "Or contact us directly")}</h3><p><a href={`https://wa.me/${site.whatsappNumber}`} target="_blank" rel="noopener noreferrer">{t(locale, site.phone)}</a></p>{site.email && <p><a href={`mailto:${site.email}`}>{t(locale, site.email)}</a></p>}{site.instagram && <p><a href={site.instagram} target="_blank" rel="noopener noreferrer">{t(locale, "Instagram")}</a></p>}</aside>
   </div>;
 }

@@ -1,0 +1,76 @@
+{
+  "GENDER_OPTIONS": [
+    {
+      "value": "female",
+      "label": "Female"
+    },
+    {
+      "value": "male",
+      "label": "Male"
+    },
+    {
+      "value": "nonbinary",
+      "label": "Non-binary"
+    },
+    {
+      "value": "prefer_not",
+      "label": "Prefer not to say"
+    }
+  ],
+  "WAIVER_VERSION": "2026-07-01",
+  "WAIVER_CLAUSES": [
+    {
+      "key": "risks",
+      "text": "I am aware that there are inherent dangers, hazards and risks (collectively \"Risks\") associated with \"Tours\" from Nomad Discovery Tours, and injuries resulting from these \"Risks\" are a rare but possible occurrence. I understand that trekking (with or without horses) is an outdoor adventure activity that carries inherent and unavoidable risks, including but not limited to:",
+      "subItems": [
+        "Falling or being thrown from a horse;",
+        "Collisions with other riders, animals, or natural obstacles;",
+        "Unexpected animal behavior (including reaction to such things as sounds, sudden movement, tremors, vibrations, unfamiliar objects, persons or other animals and hazards such as subsurface objects);",
+        "Changing weather and terrain conditions;",
+        "Equipment failure;",
+        "The potential for other participants to behave in a negligent manner that may contribute to injury to themselves or others;",
+        "Transportation to and from the activity site; and",
+        "The risk of serious injury, illness, disability, or death."
+      ]
+    },
+    {
+      "key": "assume",
+      "text": "I freely accept and fully assume all responsibility for all \"Risks\" and possibilities of any and all personal injury, sickness, disease, medical payments, death, property damage or loss resulting from my participation in \"Tours\"."
+    },
+    {
+      "key": "negligence",
+      "text": "I agree that although the \"Agency\" has taken steps to reduce the \"Risks\" and increase the safety of the tours, it is not possible for the \"Agency\" to make the tours completely safe. I accept these \"Risks\" and agree to the terms of this waiver even if the \"Agency\" is found to be negligent or in breach of any duty of care or any obligation to me in my participation in \"Tours\"."
+    },
+    {
+      "key": "release",
+      "text": "To the maximum extent permitted by law, I hereby fully release, waive, discharge, and hold harmless Nomad Discovery Tours its owners, employees, guides, volunteers, and representatives (collectively, the \"Released Parties\") from any and all claims, demands, liabilities, actions, damages, losses, costs, or expenses arising out of or in connection with my participation in the activity. This release applies whether the claim arises from negligence (including gross negligence), breach of contract, or any other cause of action, except where prohibited by law.",
+      "subItems": [
+        "This Agreement shall be governed by and construed in accordance with the laws of the Kyrgyz Republic. Any dispute arising out of or related to this Agreement or the activities described herein shall be submitted exclusively to the jurisdiction of the courts of the Kyrgyz Republic."
+      ]
+    },
+    {
+      "key": "fitness",
+      "text": "I declare that I am physically and mentally fit to participate in this activity. I have disclosed all relevant medical conditions to the organizers. I understand that medical assistance may be limited or delayed due to the remote location of the trek."
+    },
+    {
+      "key": "insurance",
+      "text": "I acknowledge that it is my responsibility to obtain adequate medical and travel insurance to cover any expenses that may arise in the event of injury, illness, or accident."
+    },
+    {
+      "key": "instructions",
+      "text": "I agree to follow all safety instructions, rules, and directions given by guides, instructors, and staff. I understand that failure to comply with such instructions may result in removal from activities without refund."
+    },
+    {
+      "key": "belongings",
+      "text": "I acknowledge that the Released Parties are not responsible for any loss, theft, or damage to my personal belongings during the activity."
+    },
+    {
+      "key": "age",
+      "text": "I confirm I am 18 years of age or older. If I am signing on behalf of a minor, I represent that I am the minor’s legal parent or guardian and agree to all terms on their behalf."
+    },
+    {
+      "key": "guideSub",
+      "text": "I understand that in unforeseen circumstances Nomad Discovery Tours may substitute the guide with another qualified guide who may have varying English proficiency, and I waive any claim arising from a good-faith guide substitution."
+    }
+  ]
+}

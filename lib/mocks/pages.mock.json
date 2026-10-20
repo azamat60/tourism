@@ -1,0 +1,550 @@
+{
+  "home": {
+    "testimonials": [
+      {
+        "quote": "Riding through the mountains of Kyrgyzstan was INCREDIBLE!!!! Shergazy was amazing and the horses were well cared for. Can't recommend this enough!",
+        "name": "Maria, Spain"
+      },
+      {
+        "quote": "The landscapes were seriously out of this world, and the hospitality unmatched. Highly recommend this tour!",
+        "name": "Alex, UK"
+      }
+    ],
+    "featuredTours": [
+      {
+        "title": "2-Day Song-Kul Lake Ride",
+        "slug": "2-day-song-kul-lake-ride",
+        "image": "/images/Horse6.webp",
+        "imagePosition": "center 60%",
+        "blurb": "Ride through sweeping valleys and mountain passes on a 2-day trek to the serene beauty of Song-Kul Lake",
+        "duration": "2 days",
+        "price": 240
+      },
+      {
+        "title": "3-Day Song-Kul Lake Ride",
+        "slug": "3-day-song-kul-lake-ride",
+        "image": "/images/SongKulHorse.webp",
+        "blurb": "Camp under the stars by the pristine Song-Kul Lake on a 3-day horse trek.",
+        "duration": "3 days",
+        "price": 310
+      },
+      {
+        "title": "5-Day Song-Kul & Kel-Suu Tour",
+        "slug": "5-day-song-kul-kel-suu",
+        "image": "/images/KelSuuWater.webp",
+        "blurb": "Have more time? See both Song-Kul and Kel-Suu on an accelerated 5-day tour!",
+        "duration": "5 days",
+        "price": 850
+      }
+    ],
+    "offerings": [
+      {
+        "title": "Experienced Guides",
+        "text": "Led by trusted locals who know the mountains like the back of their hand - ensuring safe, memorable journeys."
+      },
+      {
+        "title": "Competitive Pricing",
+        "text": "Find a similar tour elsewhere for less? We'll match it. We do authentic treks at honest prices - no hidden fees, just great value for an unforgettable adventure."
+      },
+      {
+        "title": "English Speaking Support",
+        "text": "From booking to saddle-up, we're here to answer your questions and make sure nothing gets lost in translation."
+      },
+      {
+        "title": "Seamless Coordination",
+        "text": "You enjoy the ride - we take care of the rest. All logistics handled from the moment you book."
+      }
+    ],
+    "steps": [
+      {
+        "title": "Choose your adventure",
+        "text": "Browse our horse treks and multi-day tours, or ask us to design a private route around your plans."
+      },
+      {
+        "title": "Reserve your spot",
+        "text": "Pick a departure date and secure it online with a small deposit — or message us and we'll set it up for you."
+      },
+      {
+        "title": "Saddle up",
+        "text": "Pay the remaining balance on arrival, meet your guide, and ride out into the mountains."
+      }
+    ],
+    "sections": [
+      {
+        "id": "home-hero",
+        "blocks": [
+          {
+            "tag": "h1",
+            "text": "Discover Kyrgyzstan on horseback"
+          },
+          {
+            "tag": "p",
+            "text": "Experience the wild beauty, nomadic culture, and breathtaking landscapes of Kyrgyzstan with our expert-guided horse treks."
+          }
+        ]
+      },
+      {
+        "id": "ev-section home-featured",
+        "blocks": [
+          {
+            "tag": "h2",
+            "text": "Rides our guests love most"
+          },
+          {
+            "tag": "p",
+            "text": "From a two-day escape to Song-Kul Lake to longer journeys through the Tian Shan — every route is led by local guides."
+          },
+          {
+            "tag": "p",
+            "text": "Swipe to see more"
+          }
+        ]
+      },
+      {
+        "id": "ev-section ev-section--white home-offer",
+        "blocks": [
+          {
+            "tag": "h2",
+            "text": "Authentic adventures at honest prices"
+          },
+          {
+            "tag": "p",
+            "text": "We're a team of locals and adventurers who believe the best way to experience this land of soaring peaks, alpine lakes and nomadic heritage is from the saddle."
+          }
+        ]
+      },
+      {
+        "id": "ev-section home-steps",
+        "blocks": [
+          {
+            "tag": "h2",
+            "text": "From first message to first ride"
+          }
+        ]
+      },
+      {
+        "id": "home-band",
+        "blocks": [
+          {
+            "tag": "h2",
+            "text": "Travelling solo or as a pair?"
+          },
+          {
+            "tag": "p",
+            "text": "Join an upcoming departure with other riders — no experience needed, and the per-person price drops as the group grows."
+          }
+        ]
+      },
+      {
+        "id": "ev-section home-testimonials",
+        "blocks": [
+          {
+            "tag": "h2",
+            "text": "Stories from the saddle"
+          }
+        ]
+      },
+      {
+        "id": "ev-section ev-section--white home-blog",
+        "blocks": [
+          {
+            "tag": "h2",
+            "text": "Tips & stories for your trip"
+          }
+        ]
+      },
+      {
+        "id": "ev-section home-contact",
+        "blocks": [
+          {
+            "tag": "h2",
+            "text": "Ready to book your adventure?"
+          },
+          {
+            "tag": "p",
+            "text": "Get in touch with us to start planning your Kyrgyzstan trek. Tell us your dates, group size and what you'd love to see."
+          },
+          {
+            "tag": "h3",
+            "text": "Send us a message"
+          }
+        ]
+      }
+    ]
+  },
+  "about": {
+    "features": [
+      {
+        "title": "Local Knowledge",
+        "text": "Our guides grew up here. We know the mountains, the people, and the stories behind every valley."
+      },
+      {
+        "title": "Small Groups",
+        "text": "We keep our groups small for a personal experience and deeper connections along the way."
+      },
+      {
+        "title": "Authentic Experiences",
+        "text": "From yurt stays to local meals and nomadic traditions, you'll experience the real Kyrgyzstan."
+      },
+      {
+        "title": "Safety First",
+        "text": "Experienced guides, well-trained horses, and carefully planned routes for your peace of mind."
+      }
+    ],
+    "guides": [
+      {
+        "name": "Shergazy",
+        "role": "Co-Founder, Lead Guide",
+        "photo": "/images/Shergazy.jpeg",
+        "experience": "5+ Years Experience",
+        "region": "Born in Naryn Region",
+        "languages": "Kyrgyz, Russian, English",
+        "bio": "A lifelong horseman and expert guide, passionate about sharing Kyrgyz culture and landscapes with visitors."
+      }
+    ],
+    "sections": [
+      {
+        "id": "ev-page-hero about-hero",
+        "blocks": [
+          {
+            "tag": "h1",
+            "text": "Sharing the soul of Kyrgyzstan"
+          },
+          {
+            "tag": "p",
+            "text": "Founded by local nomads and horse lovers, we aim to share the soul of Kyrgyzstan with the world - one hoofbeat at a time."
+          }
+        ]
+      },
+      {
+        "id": "ev-section about-intro",
+        "blocks": [
+          {
+            "tag": "p",
+            "text": "Our guides are passionate about their homeland and dedicated to providing authentic, safe, and unforgettable horse trekking experiences."
+          }
+        ]
+      },
+      {
+        "id": "ev-section ev-section--white about-story",
+        "blocks": [
+          {
+            "tag": "h2",
+            "text": "It started with a love for home."
+          },
+          {
+            "tag": "p",
+            "text": "Kyrgyzstan has always been more than a destination to us. It is where we grew up, where our families have lived for generations, and where horses remain an important part of everyday life."
+          },
+          {
+            "tag": "p",
+            "text": "We created Nomad Discovery Tours to share that connection with travelers - not just by showing them the mountains, but by giving them the opportunity to experience them the way we do."
+          },
+          {
+            "tag": "blockquote",
+            "text": "When you travel with us, you're not just a guest. You become part of our journey."
+          }
+        ]
+      },
+      {
+        "id": "ev-section about-guides",
+        "blocks": [
+          {
+            "tag": "h2",
+            "text": "The people who lead the way"
+          }
+        ]
+      },
+      {
+        "id": "about-cta",
+        "blocks": [
+          {
+            "tag": "h2",
+            "text": "Ready to experience the real Kyrgyzstan?"
+          },
+          {
+            "tag": "p",
+            "text": "Join us on a journey through the mountains, valleys, and nomadic traditions of Kyrgyzstan."
+          }
+        ]
+      }
+    ]
+  },
+  "proposals": {
+    "SETTINGS": [
+      {
+        "key": "song-kul",
+        "name": "Song-Kul Lake",
+        "image": "/images/SongKulLake.jpeg",
+        "blurb": "A high alpine lake ringed by mountains and nomad pastures. Golden evening light and wide-open skies with no one else around."
+      },
+      {
+        "key": "kel-suu",
+        "name": "Kel-Suu Lake",
+        "image": "/images/KelSuuWater.webp",
+        "blurb": "Turquoise water winding between sheer canyon walls near the Chinese border. One of the most remote and dramatic places in the country."
+      },
+      {
+        "key": "yurt-camp",
+        "name": "A yurt under the stars",
+        "image": "/images/Yurt.webp",
+        "blurb": "A quiet yurt camp on the jailoo (summer pasture), with a sky full of stars once the sun goes down."
+      },
+      {
+        "key": "skazka",
+        "name": "Skazka Canyon",
+        "image": "/images/Skazka.JPG",
+        "blurb": "The \"Fairy Tale\" canyon: red and orange rock formations a short walk from the shore of Issyk-Kul."
+      }
+    ],
+    "STORY": {
+      "hero": {
+        "src": "/images/SongKulProposal.webp",
+        "alt": "A couple embracing under a balloon and flower arch on the shore of Song-Kul Lake at sunset"
+      },
+      "moments": [
+        {
+          "src": "/images/Proposal.webp",
+          "alt": "Our team building a flower arch with balloons, candles and rose petals by Song-Kul Lake",
+          "title": "We set everything up",
+          "text": "While the couple was out exploring, our team built the arch and laid out candles and rose petals on the shore."
+        },
+        {
+          "src": "/images/SongKulProposal2.webp",
+          "alt": "The newly engaged couple toasting with red wine at a candle-lit table by the lake at sunset",
+          "title": "Dinner at golden hour",
+          "text": "A table set by the water with wine, cheese, fruit and flowers, ready for the moment the sun went down."
+        }
+      ]
+    },
+    "IDEAS": [
+      {
+        "title": "Balloon & flower arch",
+        "text": "A wooden arch dressed with flowers and balloons, set up on the spot of your choice."
+      },
+      {
+        "title": "Candles & rose petals",
+        "text": "A path of candles and petals leading up to the arch for when the moment comes."
+      },
+      {
+        "title": "A table by the lake",
+        "text": "A table laid with wine, cheese, fruit and flowers to celebrate right after the question."
+      },
+      {
+        "title": "Timed for sunset",
+        "text": "We know where the evening light is best, and plan the day so you arrive right on time."
+      },
+      {
+        "title": "Arrive on horseback",
+        "text": "Combine it with one of our treks and ride in together, with the setup waiting for you."
+      },
+      {
+        "title": "A night in a yurt",
+        "text": "Stay at a yurt camp by the lake, so the evening doesn’t have to end when the sun goes down."
+      }
+    ],
+    "STEPS": [
+      {
+        "title": "Tell us your idea",
+        "text": "Send the form below. Rough plans are fine: a place, a season, or just \"somewhere beautiful\"."
+      },
+      {
+        "title": "We plan it with you",
+        "text": "We suggest a setting, timing and route, and build the trip around the moment."
+      },
+      {
+        "title": "We keep the secret",
+        "text": "We only talk to you, over WhatsApp or email. Your partner just thinks it’s a trek."
+      },
+      {
+        "title": "You ask the question",
+        "text": "Your guide handles the logistics on the day, so all you need to think about is the words."
+      }
+    ],
+    "FAQS": [
+      {
+        "q": "Can you keep it a secret from my partner?",
+        "a": "Yes. We only contact the person who sends the inquiry, and on the trip itself your guide will treat it like any other trek until the moment arrives."
+      },
+      {
+        "q": "How far in advance should I get in touch?",
+        "a": "The earlier the better, especially for summer dates and remote places like Kel-Suu, which need permits and more planning. A few weeks ahead is usually workable for Song-Kul."
+      },
+      {
+        "q": "How much does it cost?",
+        "a": "It depends on the setting, how many days, how many people and which extras you want. Send us your idea and we’ll reply with a quote."
+      },
+      {
+        "q": "Can friends or family come along?",
+        "a": "Of course. Some couples want it to be just the two of them, others want family there for the celebration. Tell us who’s coming in the form."
+      }
+    ],
+    "EXTRAS": [
+      "Balloon & flower arch",
+      "Candles & rose petals",
+      "Table with wine & snacks",
+      "Arrive on horseback",
+      "Night in a yurt"
+    ],
+    "GROUP_OPTIONS": [
+      "Just the two of us",
+      "With friends or family",
+      "Not sure yet"
+    ],
+    "sections": [
+      {
+        "id": "pr-hero",
+        "blocks": [
+          {
+            "tag": "h1",
+            "text": "Ask the question somewhere unforgettable"
+          },
+          {
+            "tag": "p",
+            "text": "A sunset over Song-Kul, a canyon lake at Kel-Suu, a yurt under the stars. We take care of the details and keep the secret, so you can focus on the moment."
+          }
+        ]
+      },
+      {
+        "id": "ev-section",
+        "blocks": [
+          {
+            "tag": "h2",
+            "text": "One evening at Song-Kul"
+          },
+          {
+            "tag": "p",
+            "text": "Every setup is different, but here’s how one of ours came together, from the first balloon to the toast."
+          }
+        ]
+      },
+      {
+        "id": "ev-section ev-section--white",
+        "blocks": [
+          {
+            "tag": "h2",
+            "text": "The moment itself"
+          }
+        ]
+      },
+      {
+        "id": "ev-section ev-section--alt",
+        "blocks": [
+          {
+            "tag": "h2",
+            "text": "Settings our guests fall for"
+          },
+          {
+            "tag": "p",
+            "text": "Places we know well from our treks. Pick one to start your inquiry, or tell us what you have in mind."
+          }
+        ]
+      },
+      {
+        "id": "ev-section",
+        "blocks": [
+          {
+            "tag": "h2",
+            "text": "Your idea, our local know-how"
+          },
+          {
+            "tag": "p",
+            "text": "Everything you see in the photos above, plus a few extras. Mix and match, or ask for something else."
+          }
+        ]
+      },
+      {
+        "id": "ev-section ev-section--alt",
+        "blocks": [
+          {
+            "tag": "h2",
+            "text": "From first message to “yes”"
+          }
+        ]
+      },
+      {
+        "id": "ev-section",
+        "blocks": [
+          {
+            "tag": "h2",
+            "text": "Thank you, your inquiry is on its way"
+          },
+          {
+            "tag": "p",
+            "text": "We’ll get back to you by WhatsApp or email to start planning. Don’t worry: we’ll only ever contact you."
+          },
+          {
+            "tag": "h2",
+            "text": "Plan your proposal"
+          },
+          {
+            "tag": "p",
+            "text": "Tell us a little about your idea. Nothing is booked until you’re happy with the plan."
+          },
+          {
+            "tag": "p",
+            "text": "Prefer to chat? WhatsApp   or ."
+          },
+          {
+            "tag": "h2",
+            "text": "Common questions"
+          }
+        ]
+      }
+    ]
+  },
+  "booking": {
+    "sections": [
+      {
+        "id": "ev-page-hero booking-hero",
+        "blocks": [
+          {
+            "tag": "h1",
+            "text": "Book Your Adventure"
+          },
+          {
+            "tag": "p",
+            "text": "Get in touch with us to start planning your Kyrgyzstan trek."
+          }
+        ]
+      }
+    ]
+  },
+  "faq": {
+    "sections": [
+      {
+        "id": "faq-head",
+        "blocks": [
+          {
+            "tag": "h1",
+            "text": "Frequently Asked Questions"
+          },
+          {
+            "tag": "p",
+            "text": "Everything you need to know before you saddle up — from riding experience to what to pack."
+          }
+        ]
+      }
+    ]
+  },
+  "blog": {
+    "sections": [
+      {
+        "id": "ev-container blog-head",
+        "blocks": [
+          {
+            "tag": "h1",
+            "text": "Our Blog"
+          },
+          {
+            "tag": "p",
+            "text": "Stories, tips, and updates from Nomad Discovery Tours."
+          }
+        ]
+      }
+    ]
+  },
+  "success": {
+    "sections": []
+  }
+}

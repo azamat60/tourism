@@ -1,8 +1,13 @@
+
+import { translate as t } from '@/lib/i18n';
 import type { ReactNode } from 'react';
+import LanguageLink from './LanguageLink';
 import type { Copy, Locale } from '@/lib/content';
 import { languageNames, locales } from '@/lib/content';
 import { localeHref, whatsappLink } from '@/lib/links';
-import { expandedCopy } from '@/lib/expandedCopy';
+import { site } from '@/lib/mocks/site.mock';
+
+const navigation = site.navigation.filter((item) => site.visibility.blog || item.path !== '/blog/');
 
 export { localeHref, whatsappLink } from '@/lib/links';
 
@@ -39,38 +44,29 @@ export function WhatsAppIcon() {
 
 function Header({ locale, copy, path }: { locale: Locale; copy: Copy; path: string }) {
   const home = localeHref(locale);
-  const plan = localeHref(locale, '/plan/');
-  const ui = expandedCopy[locale];
+  const plan = localeHref(locale, '/booking/');
+
 
   return (
     <header className="site-header">
       <div className="header-inner">
-        <a className="brand" href={home} aria-label="Nomad Discovery Tours home"><MountainMark /><BrandName /></a>
-        <nav className="desktop-nav" aria-label="Main navigation">
-          <a href={localeHref(locale, '/tours/')}>{ui.navTours}</a>
-          <a href={localeHref(locale, '/departures/')}>{ui.navDates}</a>
-          <a href={localeHref(locale, '/about/')}>{copy.navAbout}</a>
-          <a href={localeHref(locale, '/faq/')}>{ui.navFaq}</a>
-          <a href={localeHref(locale, '/journal/')}>{ui.navJournal}</a>
+        <a className="brand" href={home} aria-label={t(locale, "Nomad Discovery Tours home")}><MountainMark /><BrandName /></a>
+        <nav className="desktop-nav" aria-label={t(locale, "Main navigation")}>
+          {navigation.map((item) => <a key={item.path} href={localeHref(locale, item.path)}>{t(locale, item.label)}</a>)}
         </nav>
         <div className="header-actions">
           <details className="language-picker">
-            <summary aria-label="Choose language"><span className="globe">◎</span> {locale.toUpperCase()} <svg className="chevron" aria-hidden="true" viewBox="0 0 16 16" fill="none"><path d="m3 6 5 5 5-5" stroke="currentColor" strokeWidth="1.7" strokeLinecap="round" strokeLinejoin="round" /></svg></summary>
+            <summary aria-label={t(locale, "Choose language")}><span className="globe">◎</span> {locale === 'ge' ? 'DE' : locale.toUpperCase()} <svg className="chevron" aria-hidden="true" viewBox="0 0 16 16" fill="none"><path d="m3 6 5 5 5-5" stroke="currentColor" strokeWidth="1.7" strokeLinecap="round" strokeLinejoin="round" /></svg></summary>
             <div className="language-menu">
-              {locales.map((language) => <a key={language} href={localeHref(language, path)} lang={language === 'ge' ? 'de' : language} aria-current={language === locale ? 'page' : undefined}>{languageNames[language]}<span>{language.toUpperCase()}</span></a>)}
+              {locales.map((language) => <LanguageLink key={language} href={localeHref(language, path)} lang={language === 'ge' ? 'de' : language} aria-current={language === locale ? 'page' : undefined}>{languageNames[language]}<span>{language === 'ge' ? 'DE' : language.toUpperCase()}</span></LanguageLink>)}
             </div>
           </details>
-          <a className="header-cta" href={plan}>{copy.planTrip}<ArrowIcon diagonal /></a>
+          <a className="header-cta" href={plan}>{t(locale, "Book Now")}<ArrowIcon diagonal /></a>
           <details className="mobile-menu">
-            <summary aria-label={copy.menu}><span /><span /><span /></summary>
-            <nav aria-label="Mobile navigation">
-              <a href={localeHref(locale, '/tours/')}>{ui.navTours}</a>
-              <a href={localeHref(locale, '/departures/')}>{ui.navDates}</a>
-              <a href={localeHref(locale, '/about/')}>{copy.navAbout}</a>
-              <a href={localeHref(locale, '/faq/')}>{ui.navFaq}</a>
-              <a href={localeHref(locale, '/journal/')}>{ui.navJournal}</a>
-              <a href={plan}>{copy.planTrip}</a>
-              <a href={localeHref(locale, '/booking/')}>{ui.navBooking}</a>
+            <summary aria-label={t(locale, copy.menu)}><span /><span /><span /></summary>
+            <nav aria-label={t(locale, "Mobile navigation")}>
+              {navigation.map((item) => <a key={item.path} href={localeHref(locale, item.path)}>{t(locale, item.label)}</a>)}
+              <a href={plan}>{t(locale, "Book Now")}</a>
             </nav>
           </details>
         </div>
@@ -81,9 +77,9 @@ function Header({ locale, copy, path }: { locale: Locale; copy: Copy; path: stri
 
 function Footer({ locale, copy }: { locale: Locale; copy: Copy }) {
   const home = localeHref(locale);
-  const ui = expandedCopy[locale];
+
   return (
-    <footer className="footer"><div className="page-width"><div className="footer-main"><div><a className="brand footer-brand" href={home}><MountainMark /><BrandName /></a><p>{copy.footerLine}</p></div><div className="footer-links"><div><h3>{copy.footerExplore}</h3><a href={localeHref(locale, '/tours/')}>{ui.navTours}</a><a href={localeHref(locale, '/departures/')}>{ui.navDates}</a><a href={localeHref(locale, '/about/')}>{copy.navAbout}</a><a href={localeHref(locale, '/faq/')}>{ui.navFaq}</a><a href={localeHref(locale, '/journal/')}>{ui.navJournal}</a></div><div><h3>{copy.footerConnect}</h3><a href={localeHref(locale, '/booking/')}>{ui.navBooking}</a><a href="tel:+996559773283">+996 559 773 283</a><a href={whatsappLink(copy.inquiryMessage)} target="_blank" rel="noopener noreferrer">WhatsApp</a></div></div></div><div className="footer-bottom"><span>© {new Date().getFullYear()} Nomad Discovery Tours. {copy.rights}</span><span>KYRGYZSTAN · 42°52′ N 74°36′ E</span></div></div></footer>
+    <footer className="footer"><div className="page-width"><div className="footer-main"><div><a className="brand footer-brand" href={home}><MountainMark /><BrandName /></a><p>{t(locale, site.description)}</p></div><div className="footer-links"><div><h3>{t(locale, "Explore")}</h3>{navigation.map((item) => <a key={item.path} href={localeHref(locale, item.path)}>{t(locale, item.label)}</a>)}</div><div><h3>{t(locale, "Popular tours")}</h3>{[['2-day-song-kul-lake-ride', '2-Day Song-Kul Lake Ride'], ['3-day-song-kul-lake-ride', '3-Day Song-Kul Lake Ride'], ['5-day-song-kul-kel-suu', '5-Day Song-Kul & Kel-Suu'], ['custom-private-tour', 'Custom Private Tour']].map(([slug, title]) => <a key={slug} href={localeHref(locale, `/tours/${slug}/`)}>{t(locale, title)}</a>)}</div><div><h3>{t(locale, "Get in touch")}</h3><a href={localeHref(locale, '/booking/')}>{t(locale, "Plan your trip")}</a><a href={`tel:+${site.whatsappNumber}`}>{t(locale, site.phone)}</a>{site.email && <a href={`mailto:${site.email}`}>{t(locale, site.email)}</a>}{site.instagram && <a href={site.instagram} target="_blank" rel="noopener noreferrer">{t(locale, "Instagram")}</a>}<a href={whatsappLink(copy.inquiryMessage)} target="_blank" rel="noopener noreferrer">{t(locale, "WhatsApp")}</a></div></div></div><div className="footer-bottom"><span>© {t(locale, new Date().getFullYear())} {t(locale, site.name)}{t(locale, ". All rights reserved.")}</span><span>{t(locale, "KYRGYZSTAN · All prices in USD")}</span></div></div></footer>
   );
 }
 
@@ -97,5 +93,5 @@ export default function SiteChrome({ locale, copy, path = '/', children }: {
   path?: string;
   children: ReactNode;
 }) {
-  return <div className="site-shell" dir={locale === 'ar' ? 'rtl' : 'ltr'}><Header locale={locale} copy={copy} path={path} /><main>{children}</main><Footer locale={locale} copy={copy} /><FloatingWhatsApp copy={copy} /></div>;
+  return <div className="site-shell" dir={locale === 'ar' ? 'rtl' : 'ltr'}><a className="skip-link" href="#main-content">{t(locale, "Skip to content")}</a><Header locale={locale} copy={copy} path={path} /><main id="main-content">{children}</main><Footer locale={locale} copy={copy} /><FloatingWhatsApp copy={copy} /></div>;
 }

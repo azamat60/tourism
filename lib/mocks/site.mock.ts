@@ -1,0 +1,32 @@
+export const site = {
+  name: 'Nomad Discovery Tours',
+  heroVideoId: 'yy-4muqqTSU',
+  heroVideoStart: 10,
+  visibility: { testimonials: false, blog: false },
+  heroVideoTitle: 'Kyrgyzstan Horse Riding video I DRONE 4K I Cinematic',
+  heroVideoAuthor: 'JishinnRaJ',
+  heroPoster: '/images/hero.jpg',
+  heroFallback: '/images/KelSuu1.JPG',
+  email: '',
+  phone: '+996 559 773283',
+  whatsappNumber: '996559773283',
+  instagram: '',
+  description: 'Locally guided horse treks and mountain adventures across Kyrgyzstan — alpine lakes, yurt stays and real nomadic hospitality.',
+  preparationGuide: '/NomadDiscoveryToursPrepGuide.pdf',
+  navigation: [
+    { path: '/tours/', label: 'Tours' }, { path: '/open-tours/', label: 'Join a Group' },
+    { path: '/proposals/', label: 'Proposals' }, { path: '/about/', label: 'About' },
+    { path: '/faq/', label: 'FAQ' }, { path: '/blog/', label: 'Blog' },
+  ],
+  mockNotice: 'Demo mode: requests and reservations stay in this browser. No message is sent and no payment is taken.',
+  bookingSteps: [
+    { title: 'Send your request', text: "Tell us your dates, group size and the tour you're interested in." },
+    { title: 'We get back to you', text: "We'll reply by email or WhatsApp to plan the details with you." },
+    { title: 'Confirm your trek', text: 'Lock in your dates and get ready to ride.' },
+  ],
+  paymentPolicy: [
+    'Deposit is 50% refundable if cancelled at least 7 days before the tour; non-refundable if cancelled within 7 days of the tour.',
+    'The remaining amount owed will be paid in USD cash on arrival, or Kyrgyz som rounded up to the nearest 10.',
+    'The amount due upon arrival is calculated based on the total number of guests registered for the tour. If someone in your group cancels, your final amount owed may increase depending on the updated group size.',
+  ],
+};

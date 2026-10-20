@@ -1,3 +1,4 @@
+import { translate } from '@/lib/i18n';
 import type { Metadata } from 'next';
 import { notFound } from 'next/navigation';
 import JourneyDetail from '@/components/JourneyDetail';
@@ -13,8 +14,8 @@ export async function generateMetadata({ params }: { params: Promise<{ locale: s
   if (!isLocale(locale) || !isTourSlug(slug)) return {};
   const tour = tourBasics(content[locale], slug);
   return {
-    title: `${tour.title} | Nomad Discovery Tours`,
-    description: tour.description,
+    title: `${translate(locale, tour.title)} | Nomad Discovery Tours`,
+    description: translate(locale, tour.description),
     alternates: { languages: Object.fromEntries(locales.map((language) => [language === 'ge' ? 'de' : language, `/${language}/tours/${slug}/`])) },
   };
 }

@@ -1,6 +1,7 @@
+import { site } from './mocks/site.mock';
 import type { Locale } from '@/lib/content';
 
-export const whatsappNumber = '996559773283';
+export const whatsappNumber = site.whatsappNumber;
 
 export function whatsappLink(message: string) {
   return `https://wa.me/${whatsappNumber}?text=${encodeURIComponent(message)}`;

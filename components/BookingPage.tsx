@@ -1,13 +1,12 @@
-import SiteChrome from '@/components/SiteChrome';
-import BookingForm from '@/components/BookingForm';
+
+import { translate as t } from '@/lib/i18n';
+import SiteChrome from './SiteChrome';
+import BookingForm from './BookingForm';
+import { PageHero } from './ContentBlocks';
 import { content, type Locale } from '@/lib/content';
-import { expandedCopy } from '@/lib/expandedCopy';
+import pages from '@/lib/mocks/pages.mock.json';
 
 export default function BookingPage({ locale }: { locale: Locale }) {
-  const copy = content[locale];
-  const ui = expandedCopy[locale];
-  return <SiteChrome locale={locale} copy={copy} path="/booking/">
-    <section className="interior-intro booking-intro"><div className="page-width"><p className="eyebrow dark"><span className="eyebrow-line" />{ui.bookingLabel}</p><h1>{ui.bookingTitle}</h1><p>{ui.bookingIntro}</p></div></section>
-    <section className="booking-section"><BookingForm locale={locale} /></section>
-  </SiteChrome>;
+  const blocks = pages.booking.sections[0].blocks;
+  return <SiteChrome locale={locale} copy={content[locale]} path="/booking/"><PageHero locale={locale} label={t(locale, "Plan your trip")} title={t(locale, blocks[0].text)} description={t(locale, blocks[1].text)} /><section className="booking-section"><BookingForm locale={locale} /></section></SiteChrome>;
 }

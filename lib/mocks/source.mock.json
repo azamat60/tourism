@@ -1,0 +1,46 @@
+{
+  "source": "https://ecovalleytours.com/",
+  "capturedAt": "2026-10-19T18:38:16.675Z",
+  "timeZone": "Asia/Bishkek",
+  "language": "en",
+  "tourCount": 11,
+  "departureCount": 7,
+  "blogCount": 3,
+  "faqCount": 13,
+  "routes": [
+    "/",
+    "/tours",
+    "/open-tours",
+    "/proposals",
+    "/about",
+    "/booking",
+    "/blog",
+    "/faq",
+    "/tours/4-day-song-kul",
+    "/tours/3-day-song-kul-1-day-issyk-kul",
+    "/tours/5-day-song-kul-karakol",
+    "/tours/6-day-song-kul-kel-suu-skazka",
+    "/tours/9-day-song-kul-kel-suu-issyk-kul-skazka-karakol-altyn",
+    "/tours/5-day-song-kul-kel-suu",
+    "/tours/8-day-song-kul-issyk-kul-skazka-karakol-altyn",
+    "/tours/custom-private-tour",
+    "/tours/2-day-song-kul-lake-ride",
+    "/tours/6-day-song-kul-karakol",
+    "/tours/3-day-song-kul-lake-ride",
+    "/blog/packing-tips-trek",
+    "/blog/yurt-life-nomads",
+    "/blog/horse-trekking-kyrgyzstan"
+  ],
+  "excluded": [
+    "Private customer data",
+    "Inactive tours",
+    "Admin pages",
+    "Internal commission fields",
+    "Production payment credentials"
+  ],
+  "services": {
+    "inquiries": "local mock",
+    "reservations": "local mock",
+    "payments": "simulation; no payment details collected"
+  }
+}

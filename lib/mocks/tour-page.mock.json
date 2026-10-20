@@ -1,0 +1,19 @@
+{
+  "aboutTitle": "About this Tour",
+  "itineraryTitle": "Sample Itinerary",
+  "includedTitle": "What's Included",
+  "departuresTitle": "Scheduled Departures",
+  "departuresIntro": "If these dates don't match your travel plans, no worries! Tours can be created for ANY day, and we will do our best to help match you with a group. Contact us via our booking page or on WhatsApp.",
+  "ridingNote": "No riding experience needed - our guides will be with you every step of the way.",
+  "passportNote": "Scanned copies of all participants' passports must be submitted at the time of booking.",
+  "pillarsTitle": "Why you'll love it",
+  "pillars": [
+    { "title": "Scenic Landscapes", "text": "Ride through alpine valleys, mountain passes and wide open pastures." },
+    { "title": "Nomadic Culture", "text": "Stay in a traditional yurt and experience warm local hospitality." },
+    { "title": "Horseback Adventure", "text": "A beautiful experience to explore the stunning Kyrgyz terrain." },
+    { "title": "Perfect Getaway", "text": "unforgettable memories in the mountains." }
+  ],
+  "helpTitle": "Questions before you book?",
+  "helpText": "Our team is happy to help you choose the right dates and route.",
+  "trust": ["Secure your spot online with a deposit", "Pay the remaining balance on arrival"]
+}

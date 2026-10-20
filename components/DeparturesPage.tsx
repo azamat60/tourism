@@ -1,14 +1,10 @@
-import SiteChrome, { ArrowIcon, localeHref } from '@/components/SiteChrome';
-import DepartureExplorer from '@/components/DepartureExplorer';
+
+import { translate as t } from '@/lib/i18n';
+import SiteChrome, { localeHref } from './SiteChrome';
+import DepartureExplorer from './DepartureExplorer';
+import { PageHero } from './ContentBlocks';
 import { content, type Locale } from '@/lib/content';
-import { expandedCopy } from '@/lib/expandedCopy';
 
 export default function DeparturesPage({ locale }: { locale: Locale }) {
-  const copy = content[locale];
-  const ui = expandedCopy[locale];
-  return <SiteChrome locale={locale} copy={copy} path="/departures/">
-    <section className="interior-intro"><div className="page-width"><p className="eyebrow dark"><span className="eyebrow-line" />{ui.datesLabel}</p><h1>{ui.datesTitle}</h1><p>{ui.datesIntro}</p></div></section>
-    <section className="departures-section"><DepartureExplorer locale={locale} /></section>
-    <section className="catalog-closing"><div className="page-width"><div><p className="eyebrow light"><span className="eyebrow-line" />{ui.privateTitle}</p><h2>{ui.privateTitle}</h2><p>{ui.privateText}</p></div><a className="button button-light" href={localeHref(locale, '/plan/')}>{copy.planTrip}<ArrowIcon diagonal /></a></div></section>
-  </SiteChrome>;
+  return <SiteChrome locale={locale} copy={content[locale]} path="/open-tours/"><PageHero locale={locale} label={t(locale, "Group departures")} title={t(locale, "Join a Group")} description={t(locale, "Join an upcoming booked tour - no experience needed! Ride with other travellers and share the trail.")} /><section className="departures-section"><DepartureExplorer locale={locale} /></section><section className="catalog-closing"><div className="page-width"><div><h2>{t(locale, "Don't see your dates?")}</h2><p>{t(locale, "Tours can be created for any day — tell us when you're travelling and we'll try to match you with a group.")}</p></div><a className="button button-light" href={localeHref(locale, '/booking/')}>{t(locale, "Request a date")}</a></div></section></SiteChrome>;
 }

@@ -1,81 +1,25 @@
+
+import { translate as t } from '@/lib/i18n';
 import Image from 'next/image';
 import type { Copy, Locale } from '@/lib/content';
-import SiteChrome, { ArrowIcon, MountainMark, WhatsAppIcon, localeHref, whatsappLink } from '@/components/SiteChrome';
-import { expandedCopy } from '@/lib/expandedCopy';
-
-function TourCard({ image, number, title, place, tag, description, days, slug, locale, copy }: {
-  image: string; number: string; title: string; place: string; tag: string; description: string; days: number; slug: string; locale: Locale; copy: Copy;
-}) {
-  return (
-    <a className="tour-card" href={localeHref(locale, `/tours/${slug}/`)} aria-label={`${copy.viewJourney}: ${title}`}>
-      <div className="tour-image-wrap">
-        <Image src={image} alt={place} width={1448} height={1086} sizes="(max-width: 680px) 100vw, 33vw" />
-        <span className="tour-tag">{tag}</span>
-      </div>
-      <div className="tour-info">
-        <div className="tour-meta"><span>{place}</span><span>{days} {copy.days}</span></div>
-        <div className="tour-heading"><span className="tour-number">{number}</span><h3>{title}</h3></div>
-        <p>{description}</p>
-        <span className="text-link">{copy.viewJourney}<ArrowIcon diagonal /></span>
-      </div>
-    </a>
-  );
-}
+import SiteChrome, { ArrowIcon, localeHref } from './SiteChrome';
+import { ContentBlocks, TourCard } from './ContentBlocks';
+import { asset, blogPosts, getTour } from '@/lib/mock-data';
+import pages from '@/lib/mocks/pages.mock.json';
+import { site } from '@/lib/mocks/site.mock';
+import BookingForm from './BookingForm';
+import HeroMedia from './HeroMedia';
 
 export default function Home({ locale, copy }: { locale: Locale; copy: Copy }) {
-  return (
-    <SiteChrome locale={locale} copy={copy}>
-        <section className="hero" aria-labelledby="hero-title">
-          <Image className="hero-image" src="/images/hero.jpg" alt="" fill priority sizes="100vw" />
-          <div className="hero-shade" />
-          <div className="hero-inner page-width">
-            <div className="hero-content">
-              <p className="eyebrow light"><span className="eyebrow-line" />{copy.eyebrow}</p>
-              <h1 id="hero-title">{copy.heroTitle}</h1>
-              <p className="hero-description">{copy.heroDescription}</p>
-              <a className="button button-light" href="#journeys">{copy.explore}<ArrowIcon diagonal /></a>
-            </div>
-            <div className="hero-bottom"><span className="hero-index">01 <span>/</span> 03</span><a href="#intro">{copy.scroll}<span className="scroll-line" /></a><span className="hero-location">42°06′ N &nbsp; 75°07′ E</span></div>
-          </div>
-        </section>
-
-        <section className="intro page-width" id="intro">
-          <div className="intro-kicker"><span className="asterisk">✳</span><span>{copy.smallLabel}</span></div>
-          <div className="intro-copy"><h2>{copy.smallTitle}</h2><p>{copy.smallDescription}</p></div>
-          <div className="intro-stamp" aria-hidden="true"><span>EXPLORE<br />KYRGYZSTAN</span><MountainMark /></div>
-        </section>
-
-        <section className="journeys section-pad" id="journeys">
-          <div className="page-width">
-            <div className="section-head"><div><p className="eyebrow dark"><span className="eyebrow-line" />{copy.toursLabel}</p><h2>{copy.toursTitle}</h2></div><p>{copy.toursDescription}</p></div>
-            <div className="tour-grid">
-              <TourCard image="/images/song-kul.jpg" number="01" title={copy.tour1Title} place={copy.tour1Place} tag={copy.tour1Tag} description={copy.tour1Description} days={3} slug="song-kul-escape" locale={locale} copy={copy} />
-              <TourCard image="/images/kel-suu.jpg" number="02" title={copy.tour2Title} place={copy.tour2Place} tag={copy.tour2Tag} description={copy.tour2Description} days={5} slug="kel-suu-wilderness" locale={locale} copy={copy} />
-              <TourCard image="/images/hero.jpg" number="03" title={copy.tour3Title} place={copy.tour3Place} tag={copy.tour3Tag} description={copy.tour3Description} days={7} slug="nomad-trail" locale={locale} copy={copy} />
-            </div>
-            <div className="journey-actions"><a className="text-link" href={localeHref(locale, '/tours/')}>{expandedCopy[locale].allTours}<ArrowIcon diagonal /></a><a className="text-link" href={localeHref(locale, '/departures/')}>{expandedCopy[locale].datesTitle}<ArrowIcon diagonal /></a></div>
-          </div>
-        </section>
-
-        <section className="philosophy section-pad" id="about">
-          <div className="page-width philosophy-grid">
-            <div className="philosophy-title"><p className="eyebrow dark"><span className="eyebrow-line" />{copy.philosophyLabel}</p><h2>{copy.philosophyTitle}</h2><p>{copy.philosophyDescription}</p></div>
-            <div className="values">
-              <div className="value"><span>01</span><div><h3>{copy.value1Title}</h3><p>{copy.value1Description}</p></div><span className="value-mark">↗</span></div>
-              <div className="value"><span>02</span><div><h3>{copy.value2Title}</h3><p>{copy.value2Description}</p></div><span className="value-mark">↗</span></div>
-              <div className="value"><span>03</span><div><h3>{copy.value3Title}</h3><p>{copy.value3Description}</p></div><span className="value-mark">↗</span></div>
-            </div>
-          </div>
-        </section>
-
-        <section className="experience" id="experience">
-          <div className="experience-visual"><Image src="/images/kel-suu.jpg" alt="" fill sizes="(max-width: 680px) 100vw, 50vw" /><span className="experience-frame" /></div>
-          <div className="experience-content"><p className="eyebrow light"><span className="eyebrow-line" />{copy.experienceLabel}</p><h2>{copy.experienceTitle}</h2><p>{copy.experienceDescription}</p><a className="button button-outline" href={localeHref(locale, '/plan/')}>{copy.experienceLink}<ArrowIcon diagonal /></a></div>
-        </section>
-
-        <section className="contact section-pad" id="contact">
-          <div className="page-width contact-inner"><div><p className="eyebrow dark"><span className="eyebrow-line" />{copy.contactLabel}</p><h2>{copy.contactTitle}</h2><p>{copy.contactDescription}</p></div><div className="contact-action"><a href={whatsappLink(copy.inquiryMessage)} target="_blank" rel="noopener noreferrer" className="button button-dark"><WhatsAppIcon />{copy.whatsapp}<ArrowIcon diagonal /></a><span>{copy.response}</span><a className="phone-link" href="tel:+996559773283">+996 559 773 283</a></div></div>
-        </section>
-    </SiteChrome>
-  );
+  const home = pages.home;
+  return <SiteChrome locale={locale} copy={copy}>
+    <section className="hero" aria-labelledby="hero-title"><HeroMedia locale={locale} /><div className="hero-shade" /><div className="hero-inner page-width"><div className="hero-content"><p className="eyebrow light"><span className="eyebrow-line" />{t(locale, "Horse treks & tours · Kyrgyzstan")}</p><h1 id="hero-title">{t(locale, home.sections[0].blocks[0].text)}</h1><p className="hero-description">{t(locale, home.sections[0].blocks[1].text)}</p><div className="source-toolbar"><a className="button button-light" href={localeHref(locale, '/tours/')}>{t(locale, "Explore Tours")}<ArrowIcon diagonal /></a><a className="button button-outline" href={localeHref(locale, '/open-tours/')}>{t(locale, "Join a Group")}</a></div><ul className="source-hero-points"><li>{t(locale, "No riding experience needed")}</li><li>{t(locale, "Local Kyrgyz guides")}</li><li>{t(locale, "Yurt stays & home-cooked meals")}</li></ul></div><div className="hero-bottom"><span>{t(locale, "KYRGYZSTAN")}</span><a href="#featured-tours">{t(locale, "Scroll to featured tours")}<span className="scroll-line" /></a></div></div></section>
+    <section className="journeys section-pad" id="featured-tours"><div className="page-width"><div className="section-head"><div><p className="eyebrow dark">{t(locale, "Featured tours")}</p><h2>{t(locale, home.sections[1].blocks[0].text)}</h2></div><p>{t(locale, home.sections[1].blocks[1].text)}</p></div><div className="tour-grid">{home.featuredTours.map((featured, index) => <TourCard key={featured.slug} tour={{ ...getTour(featured.slug)!, title: featured.title, blurb: featured.blurb, image: featured.image }} index={index} locale={locale} />)}</div><div className="journey-actions"><a className="button button-dark" href={localeHref(locale, '/tours/')}>{t(locale, "See All Tours")}<ArrowIcon diagonal /></a></div></div></section>
+    <section className="philosophy section-pad"><div className="page-width philosophy-grid"><div className="philosophy-title"><p className="eyebrow dark">{t(locale, "What we offer")}</p><ContentBlocks locale={locale} blocks={home.sections[2].blocks} /><Image src={asset('/images/SongKulHorse4.webp')} alt={t(locale, "Riders crossing a green valley near Song-Kul")} width={800} height={600} sizes="50vw" /><p>{t(locale, "Local guides who grew up in these mountains")}</p></div><div className="values">{home.offerings.map((item, index) => <div className="value" key={item.title}><span>0{t(locale, index + 1)}</span><div><h3>{t(locale, item.title)}</h3><p>{t(locale, item.text)}</p></div></div>)}</div></div></section>
+    <section className="section-pad page-width"><p className="eyebrow dark">{t(locale, "How it works")}</p><ContentBlocks locale={locale} blocks={home.sections[3].blocks} /><div className="source-columns">{home.steps.map((item, index) => <article key={item.title}><span>0{t(locale, index + 1)}</span><h3>{t(locale, item.title)}</h3><p>{t(locale, item.text)}</p></article>)}</div></section>
+    <section className="catalog-closing"><div className="page-width"><div><p className="eyebrow light">{t(locale, "Group departures")}</p><ContentBlocks locale={locale} blocks={home.sections[4].blocks} /></div><a className="button button-light" href={localeHref(locale, '/open-tours/')}>{t(locale, "See upcoming departures")}<ArrowIcon diagonal /></a></div></section>
+    {site.visibility.testimonials && <section className="section-pad page-width"><p className="eyebrow dark">{t(locale, "Testimonials")}</p><ContentBlocks locale={locale} blocks={home.sections[5].blocks} /><div className="source-columns">{home.testimonials.map((item) => <figure key={item.name}><blockquote>{t(locale, item.quote)}</blockquote><figcaption>{t(locale, item.name)}</figcaption></figure>)}</div></section>}
+    {site.visibility.blog && <section className="section-pad page-width"><p className="eyebrow dark">{t(locale, "From our blog")}</p><ContentBlocks locale={locale} blocks={home.sections[6].blocks} /><div className="journal-grid">{blogPosts.map((post) => <a className="journal-card" key={post.slug} href={localeHref(locale, `/blog/${post.slug}/`)}><div><Image src={asset(post.image)} alt={t(locale, post.title)} width={800} height={600} sizes="33vw" /></div><h3>{t(locale, post.title)}</h3><p>{t(locale, post.summary)}</p><strong>{t(locale, "Read article")}<ArrowIcon diagonal /></strong></a>)}</div><a className="text-link" href={localeHref(locale, '/blog/')}>{t(locale, "All articles")}<ArrowIcon diagonal /></a></section>}
+    <section className="section-pad" id="contact"><div className="page-width"><p className="eyebrow dark">{t(locale, "Plan your trip")}</p><ContentBlocks locale={locale} blocks={home.sections[7].blocks.slice(0, 2)} /><p><a href={`https://wa.me/${site.whatsappNumber}`} target="_blank" rel="noopener noreferrer">{t(locale, site.phone)}</a></p></div><BookingForm locale={locale} /></section>
+  </SiteChrome>;
 }

@@ -1,7 +1,9 @@
+import 'leaflet/dist/leaflet.css';
 import { isLocale } from '@/lib/content';
 import '../../globals.css';
 import '../../internal.css';
 import '../../expanded.css';
+import '../../source-content.css';
 
 export default async function LocaleLayout({ children, params }: Readonly<{
   children: React.ReactNode;

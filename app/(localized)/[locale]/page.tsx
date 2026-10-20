@@ -1,3 +1,4 @@
+import { localizedPageMetadata } from '@/lib/page-metadata';
 import type { Metadata } from 'next';
 import { notFound } from 'next/navigation';
 import Home from '@/components/Home';
@@ -9,14 +10,8 @@ export function generateStaticParams() {
 
 export async function generateMetadata({ params }: { params: Promise<{ locale: string }> }): Promise<Metadata> {
   const { locale } = await params;
-  if (!isLocale(locale)) return {};
-  return {
-    title: `${content[locale].heroTitle} | Nomad Discovery Tours`,
-    description: content[locale].heroDescription,
-    alternates: { languages: Object.fromEntries(locales.map((language) => [language === 'ge' ? 'de' : language, `/${language}/`])) },
-  };
+  return isLocale(locale) ? localizedPageMetadata('home', locale) : {};
 }
-
 export default async function LocalePage({ params }: { params: Promise<{ locale: string }> }) {
   const { locale } = await params;
   if (!isLocale(locale)) notFound();

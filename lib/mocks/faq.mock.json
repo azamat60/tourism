@@ -1,0 +1,71 @@
+[
+  {
+    "question": "How do I book a trek?",
+    "answer": "You can book a trek through our Booking page or by contacting us directly on WhatsApp at +996 559 773283."
+  },
+  {
+    "question": "Are your tours suitable for beginners?",
+    "answer": "Yes! We offer tours for all experience levels. Please check the tour details for difficulty ratings, new riders may find horses to be uncomfortable to ride after 2-3 days."
+  },
+  {
+    "question": "Can I join a horse trek if I have never ridden before?",
+    "answer": "Absolutely! Most of our horse treks are suitable for beginners. Our experienced local guides will pair you with a gentle horse and provide basic riding instructions before you set off. We make sure you feel comfortable and safe, adjusting saddles and stirrups as needed. The pace is relaxed, and our guides are always nearby to assist, especially on tricky sections."
+  },
+  {
+    "question": "What should I wear and bring for a horse trek?",
+    "answer": "Though this ultimately depends on the season, we recommend dressing in layers, as it can feel colder on horseback than hiking. Long pants (like jeans or trekking pants) help prevent chafing, and sturdy shoes or boots with a small heel are ideal. Avoid sandals or open-toed shoes. Bring a rain jacket, sun protection (hat, sunglasses, sunscreen), and gloves for the wind."
+  },
+  {
+    "question": "Are helmets provided?",
+    "answer": "Riding helmets are not commonly used by locals and are not automatically provided. If you prefer to wear a helmet, please bring your own lightweight equestrian helmet, or let us know in advance so we can try to arrange one for you."
+  },
+  {
+    "question": "Can I gallop or ride fast during the trek?",
+    "answer": "For safety and the well-being of the horses, our treks are conducted at a walking pace or gentle trot. The mountain trails are often narrow and rocky, making fast riding unsafe. On rare occasions, and only on suitable terrain, experienced riders may be allowed a short canter at the guide’s discretion."
+  },
+  {
+    "question": "Is it possible to do a short horseback ride instead of a multi-day trek?",
+    "answer": "Yes! We can arrange short rides lasting a few hours, perfect for those who want a taste of horseback riding without committing to a longer trek. These can often be added as side activities to your itinerary, such as near Karakol or Song-Kul Lake."
+  },
+  {
+    "question": "What is the recommended packing list for a horse trek?",
+    "answer": {
+      "type": "list",
+      "items": [
+        "Warm clothing and layers (temperatures can drop quickly, especially at night)",
+        "Sturdy trekking shoes or boots",
+        "Day pack for essentials (camera, water, sunscreen, snacks)",
+        "Sun protection: sunglasses, sunscreen (SPF 30+), sun hat",
+        "Waterproof jacket and pants (weather can change rapidly in the mountains)",
+        "Personal medical kit (blister care, basic medications)",
+        "Water purification tablets or drops (optional)",
+        "Reusable water bottle",
+        "Lip balm and moisturizer (the mountain air is dry)",
+        "Wet wipes or hand sanitizer",
+        "Warm hat and gloves for chilly evenings",
+        "Headlamp or flashlight for use at night",
+        "Sleeping bag (we can provide one if needed; yurts and homestays offer blankets)"
+      ]
+    }
+  },
+  {
+    "question": "What is the accommodation like during treks?",
+    "answer": "Depending on your route, you may stay in traditional yurts, local guesthouses, or camp in tents. Yurts and homestays provide blankets, but it’s a good idea to bring a sleeping bag for extra warmth and comfort."
+  },
+  {
+    "question": "How fit do I need to be for a horse trek?",
+    "answer": "No special fitness level is required, but you should be comfortable spending several hours outdoors and able to mount and dismount a horse. Let us know about any health concerns in advance so we can recommend the best trek for you."
+  },
+  {
+    "question": "What about food and water during the trek?",
+    "answer": "Meals are provided and feature local Kyrgyz cuisine. Vegetarian options are available with advance notice. We recommend bringing a refillable water bottle; clean spring water is usually available, but you may wish to bring purification tablets for peace of mind."
+  },
+  {
+    "question": "Are there age restrictions for horse treks?",
+    "answer": "We welcome riders of most ages, but children should be at least 16 years old and comfortable around animals. Please contact us if you have young children or elderly riders so we can discuss suitable options."
+  },
+  {
+    "question": "What happens in case of bad weather?",
+    "answer": "Mountain weather can be unpredictable. We recommend packing rain gear and warm layers. Our guides monitor conditions closely and may adjust the route or schedule for safety if needed."
+  }
+]

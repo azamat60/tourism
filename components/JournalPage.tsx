@@ -1,31 +1,20 @@
+
+import { translate as t } from '@/lib/i18n';
 import Image from 'next/image';
-import SiteChrome, { ArrowIcon, localeHref } from '@/components/SiteChrome';
+import SiteChrome, { ArrowIcon, localeHref } from './SiteChrome';
+import { PageHero } from './ContentBlocks';
+import MarkdownContent from './MarkdownContent';
 import { content, type Locale } from '@/lib/content';
-import { expandedCopy } from '@/lib/expandedCopy';
-import { journalImages, journalSlugs, journalStories, type JournalSlug } from '@/lib/journal';
+import { asset, blogPosts } from '@/lib/mock-data';
+import { getPost } from '@/lib/journal';
+import { site } from '@/lib/mocks/site.mock';
+import pages from '@/lib/mocks/pages.mock.json';
 
-function StoryCard({ locale, slug, index }: { locale: Locale; slug: JournalSlug; index: number }) {
-  const story = journalStories[locale][slug];
-  const ui = expandedCopy[locale];
-  return <a href={localeHref(locale, `/journal/${slug}/`)} className="journal-card"><div><Image src={journalImages[slug]} alt="" width={1448} height={1086} sizes="(max-width: 680px) 100vw, 32vw" /></div><span>0{index + 1} / {ui.journalLabel}</span><h2>{story.title}</h2><p>{story.excerpt}</p><strong>{ui.readStory}<ArrowIcon diagonal /></strong></a>;
+export function JournalDetail({ locale, slug }: { locale: Locale; slug: string }) {
+  const post = getPost(slug)!;
+  return <SiteChrome locale={locale} copy={content[locale]} path={`/blog/${post.slug}/`}><PageHero locale={locale} label={t(locale, "Journal")} title={t(locale, post.title)} description={t(locale, post.summary)} image={post.image} /><article className="page-width source-article"><a href={localeHref(locale, '/blog/')}>{t(locale, "← Back to Blog")}</a><MarkdownContent locale={locale} text={t(locale, post.content)} /><aside><h2>{t(locale, "Ready to ride?")}</h2><p>{t(locale, "Explore our horse treks or message us — we'll help you plan the perfect trip.")}</p><div className="source-toolbar"><a className="button button-dark" href={localeHref(locale, '/tours/')}>{t(locale, "View tours")}<ArrowIcon diagonal /></a><a href={`https://wa.me/${site.whatsappNumber}`}>{t(locale, "WhatsApp")}</a></div></aside><section><h2>{t(locale, "Keep reading")}</h2><div className="journal-grid">{blogPosts.filter((item) => item.slug !== post.slug).map((item) => <a key={item.slug} className="journal-card" href={localeHref(locale, `/blog/${item.slug}/`)}><div><Image src={asset(item.image)} alt={t(locale, item.title)} width={800} height={600} sizes="50vw" /></div><h3>{t(locale, item.title)}</h3><p>{t(locale, item.summary)}</p><strong>{t(locale, "Read More")}</strong></a>)}</div></section></article></SiteChrome>;
 }
-
-export function JournalDetail({ locale, slug }: { locale: Locale; slug: JournalSlug }) {
-  const copy = content[locale];
-  const ui = expandedCopy[locale];
-  const story = journalStories[locale][slug];
-  return <SiteChrome locale={locale} copy={copy} path={`/journal/${slug}/`}>
-    <section className="journal-detail-hero"><Image src={journalImages[slug]} alt="" fill priority sizes="100vw" /><div className="interior-hero-shade" /><div className="page-width journal-detail-heading"><a href={localeHref(locale, '/journal/')}>← {ui.backJournal}</a><div><p className="eyebrow light"><span className="eyebrow-line" />{ui.journalLabel}</p><h1>{story.title}</h1><p>{story.excerpt}</p></div></div></section>
-    <article className="page-width journal-article"><p className="journal-lead">{story.lead}</p>{story.sections.map((section, index) => <section key={section.title}><span>0{index + 1}</span><div><h2>{section.title}</h2><p>{section.text}</p></div></section>)}<a className="text-link" href={localeHref(locale, '/journal/')}>{ui.backJournal}<ArrowIcon diagonal /></a></article>
-    <section className="catalog-closing"><div className="page-width"><div><p className="eyebrow light"><span className="eyebrow-line" />{ui.bookingLabel}</p><h2>{copy.contactTitle}</h2></div><a className="button button-light" href={localeHref(locale, '/plan/')}>{copy.planTrip}<ArrowIcon diagonal /></a></div></section>
-  </SiteChrome>;
-}
-
 export default function JournalPage({ locale }: { locale: Locale }) {
-  const copy = content[locale];
-  const ui = expandedCopy[locale];
-  return <SiteChrome locale={locale} copy={copy} path="/journal/">
-    <section className="interior-intro"><div className="page-width"><p className="eyebrow dark"><span className="eyebrow-line" />{ui.journalLabel}</p><h1>{ui.journalTitle}</h1><p>{ui.journalIntro}</p></div></section>
-    <section className="journal-section"><div className="page-width journal-grid">{journalSlugs.map((slug, index) => <StoryCard locale={locale} slug={slug} index={index} key={slug} />)}</div></section>
-  </SiteChrome>;
+  const blocks = pages.blog.sections[0].blocks;
+  return <SiteChrome locale={locale} copy={content[locale]} path="/blog/"><PageHero locale={locale} label={t(locale, "Journal")} title={t(locale, blocks[0].text)} description={t(locale, blocks[1].text)} /><section className="journal-section"><div className="page-width journal-grid">{blogPosts.map((post, index) => <a className="journal-card" key={post.slug} href={localeHref(locale, `/blog/${post.slug}/`)}><div><Image src={asset(post.image)} alt={t(locale, post.title)} width={1448} height={1086} sizes="33vw" /></div><span>{t(locale, index === 0 ? 'Featured' : 'Journal')}</span><h2>{t(locale, post.title)}</h2><p>{t(locale, post.summary)}</p><strong>{t(locale, "Read More")}<ArrowIcon diagonal /></strong></a>)}</div></section></SiteChrome>;
 }
