@@ -1,6 +1,6 @@
-import { pageMetadata } from '@/lib/page-metadata';
+import { localizedPageMetadata } from '@/lib/page-metadata';
 import type { Metadata } from 'next';
 import DeparturesPage from '@/components/DeparturesPage';
 
-export const metadata = pageMetadata.departures;
+export async function generateMetadata() { return localizedPageMetadata('departures'); }
 export default function Page() { return <DeparturesPage locale="en" />; }

@@ -1,18 +1,23 @@
 'use client';
 
-import { formatCount, translate as t } from '@/lib/i18n';
+import { useCatalog, useTranslation } from './SiteData';
+
+import { formatCount } from '@/lib/i18n';
 
 import type { Locale } from '@/lib/content';
 
 import Image from 'next/image';
 import { useEffect, useRef, useState } from 'react';
-import { asset } from '@/lib/mock-data';
+
 import TourIcon from './TourIcon';
 import { ArrowIcon } from './SiteChrome';
 
 export default function PhotoGallery({ images, captions = {}, title = 'Photos', locale = 'en' }: {
   locale?: Locale; images: string[]; captions?: Record<string, string>; title?: string;
 }) {
+  const { asset } = useCatalog();
+  const t = useTranslation();
+
   const [selected, setSelected] = useState<number | null>(null);
   const [expanded, setExpanded] = useState(false);
   const dialog = useRef<HTMLDialogElement>(null);

@@ -1,14 +1,19 @@
+'use client';
 
-import { translate as t } from '@/lib/i18n';
+import { useCatalog, useTranslation } from './SiteData';
+
+
 import type { ElementType } from 'react';
 import Image from 'next/image';
-import { asset, startingPrice } from '@/lib/mock-data';
-import type { Tour } from '@/lib/mock-types';
+import { startingPrice } from '@/lib/catalog';
+import type { Tour } from '@/lib/types';
 import type { Locale } from '@/lib/content';
 import { localeHref } from '@/lib/links';
 import { ArrowIcon } from './SiteChrome';
 
 export function ContentBlocks({ blocks, locale = 'en' }: { locale?: Locale; blocks: { tag: string; text: string }[] }) {
+  const t = useTranslation();
+
   return <>{blocks.map((block, index) => {
     const Tag = block.tag as ElementType;
     return <Tag key={index}>{t(locale, block.text)}</Tag>;
@@ -16,6 +21,9 @@ export function ContentBlocks({ blocks, locale = 'en' }: { locale?: Locale; bloc
 }
 
 export function PageHero({ label, title, description, image, locale = 'en' }: { locale?: Locale; label: string; title: string; description?: string; image?: string }) {
+  const { asset } = useCatalog();
+  const t = useTranslation();
+
   return <section className={`${image ? 'interior-hero' : 'interior-intro'}${title.length > 60 ? ' has-long-title' : ''}`}>
     {image && <><Image src={asset(image)} alt="" fill priority sizes="100vw" /><div className="interior-hero-shade" /></>}
     <div className={`page-width ${image ? 'interior-hero-content' : ''}`}>
@@ -26,6 +34,9 @@ export function PageHero({ label, title, description, image, locale = 'en' }: { 
 }
 
 export function TourCard({ tour, locale, index = 0 }: { tour: Tour; locale: Locale; index?: number }) {
+  const { asset } = useCatalog();
+  const t = useTranslation();
+
   const price = startingPrice(tour);
   return <a className="tour-card" href={localeHref(locale, `/tours/${tour.slug}/`)}>
     <div className="tour-image-wrap"><Image src={asset(tour.image)} alt={t(locale, tour.title)} width={1448} height={1086} sizes="(max-width: 680px) 100vw, 33vw" /><span className="tour-tag">{t(locale, tour.category)}</span></div>

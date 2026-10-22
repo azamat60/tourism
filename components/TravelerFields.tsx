@@ -1,17 +1,22 @@
 'use client';
 
-import { countryName, translate as t } from '@/lib/i18n';
+import { useCatalog, useTranslation } from './SiteData';
+
+import { countryName } from '@/lib/i18n';
 
 import { useState } from 'react';
 import type { Locale } from '@/lib/content';
-import type { Tour } from '@/lib/mock-types';
-import { ageOnDate, countryOptions, waiverClauses, type Traveler } from '@/lib/checkout';
-import { addOnPrice } from '@/lib/mock-data';
-import checkout from '@/lib/mocks/checkout.mock.json';
+import type { Tour } from '@/lib/types';
+import { ageOnDate, type Traveler } from '@/lib/checkout';
+import { addOnPrice } from '@/lib/catalog';
+
 import SignaturePad from './SignaturePad';
 
 type Props = { locale?: Locale; traveler: Traveler; index: number; lead: Traveler; today: string; tour: Tour; contactRequired: boolean; update: (next: Traveler) => void; remove: () => void };
 export default function TravelerFields({ traveler, index, lead, today, tour, contactRequired, update, remove, locale = 'en' }: Props) {
+  const { checkout, countryOptions, waiverClauses } = useCatalog();
+  const t = useTranslation();
+
   const [phoneTouched, setPhoneTouched] = useState(false);
   const set = (key: keyof Traveler, value: string | string[]) => update({ ...traveler, [key]: value });
   const field = (label: string, key: keyof Traveler, type = 'text', required = false) => <label>{t(locale, label)}<input type={type} value={String(traveler[key])} onChange={(event) => set(key, event.target.value)} required={required} maxLength={type === 'text' ? 200 : undefined} /></label>;
@@ -31,7 +36,7 @@ export default function TravelerFields({ traveler, index, lead, today, tour, con
     <p>{t(locale, "Your emergency contact must be someone who is not traveling with you.")}</p>
     {Boolean(tour.optionalAddOns?.some((item) => item.scope !== 'group')) && <fieldset className="source-fieldset"><legend>{t(locale, "Traveler add-ons")}</legend>{tour.optionalAddOns?.filter((item) => item.scope !== 'group').map((item) => <label key={item.name} className="source-check"><input type="checkbox" checked={traveler.extras.includes(item.name)} onChange={() => set('extras', traveler.extras.includes(item.name) ? traveler.extras.filter((name) => name !== item.name) : [...traveler.extras, item.name])} /><span><strong>{t(locale, item.name)} · ${t(locale, addOnPrice(item, tour))}</strong><small>{t(locale, item.description)}</small></span></label>)}</fieldset>}
     <label className="source-search">{t(locale, "Additional notes")}<textarea value={traveler.notes} onChange={(event) => set('notes', event.target.value)} rows={2} /></label>
-    <section className="source-waiver"><h3>{t(locale, "Acknowledgment of Risk & Release of Liability")}</h3><p>{t(locale, "Waiver version: ")}{t(locale, checkout.WAIVER_VERSION)}</p><p className="source-note">{t(locale, "Demo form only. No agreement or signature is sent to Nomad Discovery Tours.")}</p><label className="source-search">{t(locale, "Your initials")}<input value={traveler.initials} onChange={(event) => set('initials', event.target.value)} maxLength={10} required /></label>
+    <section className="source-waiver"><h3>{t(locale, "Acknowledgment of Risk & Release of Liability")}</h3><p>{t(locale, "Waiver version: ")}{t(locale, checkout.WAIVER_VERSION)}</p><p className="source-note">{t(locale, "Your waiver and signature will be stored with your reservation.")}</p><label className="source-search">{t(locale, "Your initials")}<input value={traveler.initials} onChange={(event) => set('initials', event.target.value)} maxLength={10} required /></label>
       {waiverClauses.map((clause, clauseIndex) => <label className="source-check source-clause" key={clause.key}><input type="checkbox" checked={traveler.initialed.includes(clause.key)} onChange={() => set('initialed', traveler.initialed.includes(clause.key) ? traveler.initialed.filter((key) => key !== clause.key) : [...traveler.initialed, clause.key])} required /><span><strong>{t(locale, clauseIndex + 1)}. {traveler.initials}</strong> {t(locale, clause.text)}{'subItems' in clause && clause.subItems && <ul>{clause.subItems.map((item) => <li key={item}>{t(locale, item)}</li>)}</ul>}</span></label>)}
       <fieldset className="source-fieldset"><legend>{t(locale, "Photography & media")}</legend><p>{t(locale, "I grant Nomad Discovery Tours permission to photograph or film me and use the images for promotional purposes (social media, website, marketing) without compensation.")}</p>{[['yes', 'I consent'], ['no', 'I do not consent']].map(([value, label]) => <label className="source-check" key={value}><input type="radio" name={`media-${index}`} value={value} checked={traveler.mediaConsent === value} onChange={() => set('mediaConsent', value)} required />{t(locale, label)}</label>)}</fieldset>
       <h3>{t(locale, "Signer address")}</h3>{index > 0 && <button type="button" className="source-action" onClick={() => update({ ...traveler, addressLine: lead.addressLine, city: lead.city, region: lead.region, postal: lead.postal, addressCountry: lead.addressCountry })}>{t(locale, "Same address as Traveler 1")}</button>}<div className="booking-field-grid">{field('Street address', 'addressLine', 'text', true)}{field('City', 'city', 'text', true)}{field('State / region (optional)', 'region')}{field('Postal code', 'postal', 'text', true)}{country('Country', 'addressCountry')}</div>

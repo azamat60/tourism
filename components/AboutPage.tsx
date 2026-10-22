@@ -1,13 +1,19 @@
+'use client';
 
-import { translate as t } from '@/lib/i18n';
+import { useCatalog, useTranslation } from './SiteData';
+
+
 import Image from 'next/image';
 import SiteChrome, { localeHref } from './SiteChrome';
 import { ContentBlocks, PageHero } from './ContentBlocks';
 import { content, type Locale } from '@/lib/content';
-import { asset } from '@/lib/mock-data';
-import pages from '@/lib/mocks/pages.mock.json';
+
+
 
 export default function AboutPage({ locale }: { locale: Locale }) {
+  const { asset, pages } = useCatalog();
+  const t = useTranslation();
+
   const about = pages.about;
   return <SiteChrome locale={locale} copy={content[locale]} path="/about/">
     <PageHero locale={locale} label={t(locale, "About Us")} title={t(locale, about.sections[0].blocks[0].text)} description={t(locale, about.sections[0].blocks[1].text)} image="/images/Gen.webp" />

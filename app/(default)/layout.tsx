@@ -1,3 +1,5 @@
+import { loadSiteData } from '@/lib/site-data';
+import { SiteDataProvider } from '@/components/SiteData';
 import 'leaflet/dist/leaflet.css';
 import type { Metadata } from 'next';
 import '../globals.css';
@@ -10,10 +12,13 @@ export const metadata: Metadata = {
   description: 'Experience the wild beauty, nomadic culture, and breathtaking landscapes of Kyrgyzstan with our expert-guided horse treks.',
 };
 
-export default function RootLayout({ children }: Readonly<{ children: React.ReactNode }>) {
+export const dynamic = 'force-dynamic';
+
+export default async function RootLayout({ children }: Readonly<{ children: React.ReactNode }>) {
+  const data = await loadSiteData();
   return (
     <html lang="en">
-      <body>{children}</body>
+      <body><SiteDataProvider data={data}>{children}</SiteDataProvider></body>
     </html>
   );
 }

@@ -1,14 +1,18 @@
 'use client';
 
-import { translate as t } from '@/lib/i18n';
+import { useTranslation } from './SiteData';
+
+
 
 import type { Locale } from '@/lib/content';
 
 import { useMemo, useState } from 'react';
-import type { ItineraryDay } from '@/lib/mock-types';
+import type { ItineraryDay } from '@/lib/types';
 import TourMap, { type MapPoint } from './TourMap';
 
 export default function RouteExplorer({ days, locale = 'en' }: { days: ItineraryDay[]; locale?: Locale }) {
+  const t = useTranslation();
+
   const points = useMemo(() => days.flatMap((day, index) => {
     const rows: MapPoint[] = (day.waypoints || []).flatMap((waypoint) => waypoint.lat != null && waypoint.lng != null
       ? [{ name: waypoint.name, lat: waypoint.lat, lng: waypoint.lng, day: index + 1 }] : []);

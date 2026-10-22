@@ -1,5 +1,8 @@
+'use client';
 
-import { translate as t } from '@/lib/i18n';
+import { useCatalog, useTranslation } from './SiteData';
+
+
 import Image from 'next/image';
 import SiteChrome, { ArrowIcon, localeHref } from './SiteChrome';
 import { PageHero, TourCard } from './ContentBlocks';
@@ -8,10 +11,13 @@ import PhotoGallery from './PhotoGallery';
 import RouteExplorer from './RouteExplorer';
 import { TourBookingBar, TourFacts, TourInclusions, TourPricing } from './TourPractical';
 import { content, type Locale } from '@/lib/content';
-import { activeTours, asset, getTour, introduction, itineraryFor } from '@/lib/mock-data';
-import tourPage from '@/lib/mocks/tour-page.mock.json';
+import { introduction, itineraryFor } from '@/lib/catalog';
+
 
 export default function JourneyDetail({ locale, slug }: { locale: Locale; slug: string }) {
+  const { activeTours, asset, getTour, tourPage } = useCatalog();
+  const t = useTranslation();
+
   const tour = getTour(slug)!;
   const days = itineraryFor(tour);
   const photos = [...new Set([...(tour.carousel_images || []), ...(tour.images || []), tour.image])];

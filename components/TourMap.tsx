@@ -1,15 +1,19 @@
 'use client';
 
+import { useTranslation } from './SiteData';
+
 import { useEffect, useRef, useState } from 'react';
 import type { LayerGroup, Map as LeafletMap } from 'leaflet';
 import type { Locale } from '@/lib/content';
-import { formatCount, translate as t } from '@/lib/i18n';
+import { formatCount } from '@/lib/i18n';
 import TourIcon from './TourIcon';
 
 export type MapPoint = { name: string; lat: number; lng: number; day?: number; selected?: boolean };
 type Props = { points: MapPoint[]; locale?: Locale; route?: boolean; onSelect?: (point: MapPoint) => void };
 
 export default function TourMap({ points, locale = 'en', route = false, onSelect }: Props) {
+  const t = useTranslation();
+
   const container = useRef<HTMLDivElement>(null);
   const map = useRef<LeafletMap | null>(null);
   const markers = useRef<LayerGroup | null>(null);
@@ -40,7 +44,7 @@ export default function TourMap({ points, locale = 'en', route = false, onSelect
       setReady((version) => version + 1);
     }).catch(() => { if (!cancelled) setFailed(true); });
     return () => { cancelled = true; observer?.disconnect(); map.current?.remove(); map.current = null; markers.current = null; };
-  }, [locale]);
+  }, [locale, t]);
 
   useEffect(() => {
     if (!ready || !map.current || !markers.current) return;
@@ -70,7 +74,7 @@ export default function TourMap({ points, locale = 'en', route = false, onSelect
       if (!instance.getContainer().dataset.fitted) { reset.current(); instance.getContainer().dataset.fitted = 'true'; }
     });
     return () => { cancelled = true; };
-  }, [points, route, ready, locale]);
+  }, [points, route, ready, locale, t]);
 
   return <section className="source-map-wrap" aria-label={t(locale, route ? 'Route map' : 'Tour locations')}>
     <div className="tour-map-heading"><div className="tour-map-heading-icon"><TourIcon name="pin" /></div><div><p className="eyebrow dark">{t(locale, 'Explore Kyrgyzstan')}</p><h3>{t(locale, route ? 'Route map' : 'Find your next adventure')}</h3></div><span className="tour-map-count">{formatCount(locale, points.length, 'destination')}</span></div>

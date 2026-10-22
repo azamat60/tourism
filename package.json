@@ -7,13 +7,17 @@
     "build": "next build",
     "start": "next start",
     "lint": "eslint .",
-    "test": "node --test scripts/verify-content.cjs scripts/verify-locales.cjs"
+    "test": "node --test scripts/verify-content.cjs scripts/verify-locales.cjs",
+    "test:server": "node scripts/verify-server.cjs"
   },
   "dependencies": {
+    "@supabase/ssr": "0.12.7",
+    "@supabase/supabase-js": "2.118.0",
     "leaflet": "^1.9.4",
-    "next": "^16.3.7",
+    "next": "16.4.2",
     "react": "^19.1.1",
-    "react-dom": "^19.1.1"
+    "react-dom": "^19.1.1",
+    "zod": "4.6.7"
   },
   "devDependencies": {
     "@types/leaflet": "^1.9.22",
@@ -21,7 +25,9 @@
     "@types/react": "^19.1.13",
     "@types/react-dom": "^19.1.9",
     "eslint": "^9.36.0",
-    "eslint-config-next": "^16.3.7",
+    "eslint-config-next": "16.4.2",
+    "prettier": "3.9.10",
+    "supabase": "2.121.0",
     "typescript": "^5.9.2"
   }
 }

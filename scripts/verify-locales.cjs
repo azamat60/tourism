@@ -41,17 +41,7 @@ for (const locale of locales.filter((value) => value !== 'en')) {
     assert.equal(translate(locale, 'user-input@example.net'), 'user-input@example.net');
   });
 
-  test(`${locale}: exported home, catalog and FAQ contain translated content`, () => {
-    const expected = locale === 'ge' ? 'de' : locale;
-    for (const route of ['', 'tours', 'faq', 'booking', 'about', 'proposals', 'open-tours']) {
-      const filename = path.resolve(__dirname, '../out', locale, route, 'index.html');
-      assert.ok(fs.existsSync(filename), `Missing ${locale}/${route} export`);
-      const html = fs.readFileSync(filename, 'utf8');
-      assert.ok(html.includes(`lang="${expected}"`), `${locale}/${route}: HTML language`);
-      assert.ok(html.includes(translate(locale, 'Book Now')), `${locale}/${route}: navigation translation`);
-      if (locale === 'ar') assert.ok(html.includes('dir="rtl"'));
-    }
-  });
+
 }
 
 test('English source, currency, canonical records and locale country names stay intact', () => {

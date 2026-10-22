@@ -1,14 +1,19 @@
 'use client';
 
-import { formatCount, translate as t } from '@/lib/i18n';
+import { useCatalog, useTranslation } from './SiteData';
+
+import { formatCount } from '@/lib/i18n';
 
 import { useMemo, useState } from 'react';
 import type { Locale } from '@/lib/content';
-import { activeTours, durationDays, locationCoordinates, tierValue } from '@/lib/mock-data';
+import { durationDays, tierValue } from '@/lib/catalog';
 import { TourCard } from './ContentBlocks';
 import TourMap from './TourMap';
 
 export default function CatalogFilters({ locale }: { locale: Locale }) {
+  const { activeTours, locationCoordinates } = useCatalog();
+  const t = useTranslation();
+
   const [horse, setHorse] = useState('any');
   const [days, setDays] = useState('');
   const [location, setLocation] = useState('');
@@ -17,7 +22,7 @@ export default function CatalogFilters({ locale }: { locale: Locale }) {
   const [count, setCount] = useState(15);
   const [hovered, setHovered] = useState('');
   const [showMap, setShowMap] = useState(true);
-  const locations = useMemo(() => [...new Set(activeTours.flatMap((tour) => tour.locations))].sort(), []);
+  const locations = useMemo(() => [...new Set(activeTours.flatMap((tour) => tour.locations))].sort(), [activeTours]);
   const durations = [...new Set(activeTours.map((tour) => durationDays(tour)))].sort((a, b) => a - b);
   const prices = [...new Set(activeTours.map((tour) => tierValue(tour.pricesEnglish, 1)).filter((value) => value !== null))].sort((a, b) => a - b);
   const matches = activeTours.filter((tour) => (horse === 'any' || tour.horse === (horse === 'yes')) &&
@@ -35,7 +40,7 @@ export default function CatalogFilters({ locale }: { locale: Locale }) {
     const coords = locationCoordinates[name];
     if (!coords) return [];
     return [{ name, lat: coords[0], lng: coords[1], selected: name === location || Boolean(activeTours.find((tour) => tour.slug === hovered)?.locations.includes(name)) }];
-  }), [locations, location, hovered]);
+  }), [locations, location, hovered, activeTours, locationCoordinates]);
   const reset = () => { setHorse('any'); setDays(''); setLocation(''); setPrice(''); setSort('days-asc'); setCount(15); };
   return <div className="page-width">
     <div className="source-filter-grid">

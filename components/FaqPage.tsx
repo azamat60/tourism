@@ -1,16 +1,21 @@
 'use client';
 
-import { translate as t } from '@/lib/i18n';
+import { useCatalog, useTranslation } from './SiteData';
+
+
 
 import { useState } from 'react';
 import SiteChrome from './SiteChrome';
 import { PageHero } from './ContentBlocks';
 import { content, type Locale } from '@/lib/content';
-import faq from '@/lib/mocks/faq.mock.json';
-import pages from '@/lib/mocks/pages.mock.json';
-import { site } from '@/lib/mocks/site.mock';
+
+
+
 
 export default function FaqPage({ locale }: { locale: Locale }) {
+  const { faq, pages, site } = useCatalog();
+  const t = useTranslation();
+
   const [search, setSearch] = useState('');
   const blocks = pages.faq.sections[0].blocks;
   const visible = faq.filter((item) => `${t(locale, item.question)} ${typeof item.answer === 'string' ? t(locale, item.answer) : item.answer.items.map((line) => t(locale, line)).join(' ')}`.toLowerCase().includes(search.trim().toLowerCase()));

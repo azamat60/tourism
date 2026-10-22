@@ -1,14 +1,19 @@
+'use client';
 
-import { translate as t } from '@/lib/i18n';
+import { useCatalog, useTranslation } from './SiteData';
+
+
 import type { CSSProperties } from 'react';
 import type { Locale } from '@/lib/content';
-import type { Tour } from '@/lib/mock-types';
-import { startingPrice } from '@/lib/mock-data';
-import { site } from '@/lib/mocks/site.mock';
+import type { Tour } from '@/lib/types';
+import { startingPrice } from '@/lib/catalog';
+
 import { ArrowIcon, localeHref } from './SiteChrome';
 import TourIcon, { type TourIconName } from './TourIcon';
 
 export function TourBookingBar({ tour, locale }: { tour: Tour; locale: Locale }) {
+  const t = useTranslation();
+
   const price = startingPrice(tour);
   return <div className="detail-booking-bar"><div className="page-width detail-booking-inner">
     <div className="detail-starting-price">{price == null ? <strong>{t(locale, "Tailor-made")}</strong> : <><span>{t(locale, "From")}</span><strong>${t(locale, price)}</strong><span>{t(locale, "/ person")}</span></>}</div>
@@ -17,6 +22,8 @@ export function TourBookingBar({ tour, locale }: { tour: Tour; locale: Locale })
 }
 
 export function TourFacts({ tour, locale = 'en' }: { tour: Tour; locale?: Locale }) {
+  const t = useTranslation();
+
   const facts: { label: string; value?: string; icon: TourIconName }[] = [
     { label: 'Duration', value: tour.duration, icon: 'clock' },
     { label: 'Distance', value: tour.distance, icon: 'route' },
@@ -31,6 +38,8 @@ export function TourFacts({ tour, locale = 'en' }: { tour: Tour; locale?: Locale
 }
 
 export function TourInclusions({ tour, locale = 'en' }: { tour: Tour; locale?: Locale }) {
+  const t = useTranslation();
+
   return <div className="inclusion-grid">{[
     { title: 'What’s included', items: tour.inclusions, icon: 'check' as const, className: 'included' },
     { title: 'Not included', items: tour.exclusions, icon: 'minus' as const, className: 'excluded' },
@@ -38,6 +47,9 @@ export function TourInclusions({ tour, locale = 'en' }: { tour: Tour; locale?: L
 }
 
 export function TourPricing({ tour, locale = 'en' }: { tour: Tour; locale?: Locale }) {
+  const { site } = useCatalog();
+  const t = useTranslation();
+
   const entries = Object.entries(tour.pricesEnglish).sort(([a], [b]) => Number(a) - Number(b));
   const lowestPrice = Math.min(...entries.map(([, value]) => Number(value)));
   const bestPriceIndex = entries.findLastIndex(([, value]) => Number(value) === lowestPrice);

@@ -1,8 +1,8 @@
 'use client';
 
 import { useSyncExternalStore } from 'react';
-import { dayKey } from './mock-data';
-import source from './mocks/source.mock.json';
+import { dayKey } from './catalog';
+import { useSiteData } from '@/components/SiteData';
 
 function subscribeLocation(callback: () => void) {
   window.addEventListener('popstate', callback);
@@ -16,5 +16,6 @@ function subscribeDay(callback: () => void) {
   return () => window.clearInterval(timer);
 }
 export function useBishkekDay() {
-  return useSyncExternalStore(subscribeDay, () => dayKey(), () => dayKey(new Date(source.capturedAt)));
+  const { today } = useSiteData();
+  return useSyncExternalStore(subscribeDay, () => dayKey(), () => today);
 }

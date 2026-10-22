@@ -1,4 +1,3 @@
-import { normalizeDeparture, publicDepartures, tierValue } from './mock-data';
 import type { Locale } from './content';
 import type { TourSlug } from './tours';
 
@@ -11,10 +10,6 @@ export type Departure = {
   capacity: number;
 };
 
-export const sampleDepartures: Departure[] = publicDepartures.map(normalizeDeparture).map((item) => ({
-  id: item.id, tour: item.slug, start: item.start, price: tierValue(item.prices, item.booked + 1) || 0,
-  booked: item.booked, capacity: item.capacity,
-}));
 
 export const dateLocale: Record<Locale, string> = {
   en: 'en-US', es: 'es-ES', fr: 'fr-FR', it: 'it-IT', ge: 'de-DE', ru: 'ru-RU', zh: 'zh-CN', ar: 'ar-SA',

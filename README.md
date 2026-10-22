@@ -1,76 +1,101 @@
 # Nomad Discovery Tours
 
-Next.js static website using a local snapshot of the public content at https://ecovalleytours.com/.
-The source content is presented under the Nomad Discovery Tours brand; this work focuses on content, routes, and public interactions.
+Next.js 16 website and staff admin backed by Supabase Postgres, Auth and Storage.
+Public routes and existing tour/article aliases are preserved across eight languages.
 
-## Run and verify
+## Run
 
 ```bash
 npm install
-npm run dev
+cp .env.example .env.local
+# Fill in the Supabase project URL and publishable key.
+npm run dev -- --port 3001
+```
+
+The current workspace is configured for the `tourism` Supabase project.
+Open `http://localhost:3001/admin/login/`. Port 3000 may be occupied by another local project.
+
+The app needs a Next.js server. It no longer exports static HTML to `out/`.
+For production, set both variables from `.env.example`, run `npm run build`, then `npm start`.
+Configure the production Site URL and exact `/auth/callback/` URL in Supabase Authentication → URL Configuration.
+The local Supabase Site URL is `http://localhost:3001`; its allowed callback is `http://localhost:3001/auth/callback/`.
+Never put a secret or service-role key in a `NEXT_PUBLIC_` variable. This app uses only a publishable key and RLS-protected operations.
+
+## Admin
+
+At first login, choose **Первый вход**, create an account with the assigned email, and confirm the Supabase email.
+The first administrator is `aza.alt.com@gmail.com`. The password is set by the account owner.
+Creating an arbitrary account does not grant staff access.
+
+- **Overview:** published tours, upcoming departures, new inquiries and pending bookings.
+- **Content:** tours, itineraries, prices, extras, departure dates/capacity, articles, FAQs, pages and site settings.
+- **Publication:** create drafts; publish or archive content. Core pages/settings stay published because public layouts require them.
+- **Languages:** translations are stored alongside their record. Content edits preserve the translated fields; UI dictionaries remain in `lib/translations/`.
+- **Operations:** contact details, inquiry statuses, traveler information, signed waiver version, booking notes and manual deposit status.
+- **Media:** upload JPG/PNG/WebP/PDF up to 10 MB to the `tourism-media` bucket, then paste the returned URL into an image/document field.
+- **Conflicts:** saves compare record versions. Reload before retrying if another employee changed the record.
+
+Roles are checked on the server and in Postgres: `admin` accesses everything, `editor` manages public content/media, and `manager` handles inquiries/bookings.
+Staff assignments live in `tourism_private.staff`; registration invitations live in `tourism_private.invites`.
+Only an authorized database administrator can change these assignments. Roles never come from user-editable metadata.
+To invite another staff member, add their lowercase email and role to `tourism_private.invites` through the Supabase SQL editor, then have them register and confirm their email.
+
+## Data and booking behavior
+
+`lib/site-data.ts` loads published content directly from Supabase on server requests. Database failures are visible; there is no silent fixture fallback.
+`lib/catalog.ts` owns shared price, date and availability calculations; page components consume a request-scoped data provider.
+New tours and articles become accessible without a rebuild. Existing slugs are kept stable.
+
+The initial import contains 11 tours, 324 departures (including materialized schedule templates), 13 FAQs, 3 articles, 7 pages and 5 settings documents.
+The import preserves the original public content; it does not invent customer identities or historical booking records.
+Initial photos/PDFs still ship in `public/`; newly uploaded media lives in Supabase Storage.
+
+Inquiries and submitted reservations are stored in Postgres. Only unfinished checkout drafts stay in browser `sessionStorage`.
+Reservation creation locks departure inventory and calculates prices/extras/deposits inside a transaction.
+A changed total requires review, duplicate submissions reuse their reservation, and cancellation releases seats exactly once.
+Cancelled bookings cannot be reopened; create a new booking instead.
+Availability uses `Asia/Bishkek` and each tour's booking cutoff. Manage actual departure rows in admin; legacy date templates no longer recreate archived departures.
+
+Reservations start as `pending`. No card is collected or charged. Employees arrange the deposit and update payment status manually.
+Only USD is offered; the old illustrative CAD exchange rate and mock friend groups are no longer used.
+Public receipts omit traveler details and require an unguessable token stored in an HttpOnly cookie.
+Submitted traveler/waiver data is restricted to administrators and managers. Do not upload personal documents to the public media bucket.
+
+## Migrations and importing fixtures
+
+SQL migrations are tracked in `supabase/migrations/` and were applied to the `tourism` project.
+Every exposed table has RLS and explicit grants. Private helpers handle constrained public inquiry/reservation operations.
+`lib/supabase/database.types.ts` contains generated database types.
+
+`lib/mocks/` is retained only as the original import archive, type references and regression fixtures. Editing these files does not change the live site.
+To generate an idempotent initial import for another empty project:
+
+```bash
+node scripts/seed-supabase.cjs /tmp/tourism-seed.sql
+```
+
+Apply the generated SQL using an authorized Supabase database connection after applying migrations.
+It uses `ON CONFLICT DO NOTHING`, so rerunning it preserves existing edits. Never use it to overwrite production content.
+For large imports, split the generated rows into bounded batches to stay within your SQL client's request/output limits.
+
+Rollback: keep a database backup before schema changes. The original fixtures remain available for content recovery; they do not include submitted customer data.
+Restoring the previous static application requires restoring its previous Git revision and redeploying it. Do not drop the Supabase tables as part of an application rollback.
+
+## Verify
+
+```bash
 npm run lint
 npx tsc --noEmit
-npm run build
 npm test
+npm run build
+npm run start -- --port 3001
+npm run test:server
 ```
 
-`npm run build` exports the website into `out/`. Run `npm test` after building: it also checks exported routes.
-No backend, Firebase account, or payment credentials are needed.
+`npm test` covers source preservation, pricing, dates, aliases, traveler validation and locale dictionaries.
+`npm run test:server` checks live server routes in every locale, protected admin endpoints, private receipts, input validation and request origins.
+Set `SITE_URL` to target a different running server.
 
-## Where to edit content
-
-All source records are in `lib/mocks/`:
-
-- `tours.mock.json`: all 11 active public tours, exact source titles/slugs, full descriptions, structured or legacy itineraries, season boundaries, manually scheduled dates, price tiers, deposits, optional extras, inclusions, exclusions, photos and captions.
-- `departures.mock.json`: 7 sanitized active public departure records. Started departures remain in the snapshot but are hidden by date at runtime.
-- `blog.mock.json`: all 3 complete original Markdown articles.
-- `faq.mock.json`: all 13 original questions, answers, and packing-list items.
-- `pages.mock.json`: original home, about, guides, testimonials, proposal settings/story/ideas/FAQs, booking, FAQ, and blog copy.
-- `tour-page.mock.json`: tour-page explanations and shared content.
-- `checkout.mock.json`: original waiver version, all ten clauses and subclauses, and gender options.
-- `countries.mock.json`: original country and dialing-code dataset.
-- `site.mock.ts`: contacts, navigation, home video, booking steps, and original policies.
-- `assets.mock.json`: original URL to local file mapping. Photos and the original preparation PDF are saved in `public/`. The home banner uses a Kyrgyzstan horse-riding video by JishinnRaJ, embedded from YouTube; map tiles load from OpenStreetMap, with muted styling and accessible destination markers.
-- `services.mock.json`: explicit local service fixtures, illustrative CAD rate, and empty friend-group fixtures.
-- `source.mock.json`: origin, capture time, route inventory, counts, and exclusions.
-
-Add or edit records directly. Preserve unique `slug` and `id` values. For new assets, put the file in `public/images/` and use `/images/filename.webp`. The `asset()` helper also resolves the original source URLs to local copies.
-
-`tours.mock.json` intentionally retains source strings, numeric strings, legacy escaped line breaks, spelling, and capitalization. Normalization belongs in `lib/mock-data.ts`; source records remain editable without rewriting original content. Structured itinerary days take precedence over legacy description days.
-
-Public pages, tour descriptions, itineraries, articles, FAQs, forms, validation and map controls use local translation dictionaries in `lib/translations/` for English, Spanish, French, Italian, German (`ge`, retained for route compatibility), Russian, Simplified Chinese and Arabic. Source records and submitted form values stay canonical. Language changes preserve query parameters and anchors. Arabic pages use RTL; dates and country names use locale-aware browser formatting. Translation resources are indexed against `source.json`; keep array order and placeholders aligned when editing.
-
-## Pages and behavior
-
-Original public routes are available: `/`, `/tours/`, `/tours/[slug]/`, `/open-tours/`, `/proposals/`, `/about/`, `/booking/`, `/faq/`, `/blog/`, `/blog/[slug]/`, `/reserve/[slug]/`, `/success/`, and `/reserve-success/`.
-
-Existing `/departures/`, `/journal/`, `/plan/`, three old tour slugs, and three old article slugs remain working aliases. `/plan/` opens the original inquiry flow.
-
-Implemented behavior includes catalog filters/sorting and location map; captioned photo galleries with keyboard/swipe navigation; complete day programs; optional route/altitude views when coordinates/altitudes exist; group dates, capacity, month calendar and filters; tour/date inquiry prefilling; proposal setting selection and inquiry; checkout travelers, per-person/group/day extras, tier prices, deposits, CAD display, waiver/media consent, drawn signatures, guardian fields, policies, saved drafts, confirmation, receipt, and print.
-
-Availability follows the source rules: Bishkek timezone; started tours hidden; source season boundaries checked for both start and end; default two-day cutoff for empty scheduled dates and one-day cutoff for occupied departures; positive per-tour cutoff overrides both. Live departures replace manual templates on the same date without merging distinct live groups.
-
-## Local service boundary
-
-`lib/mock-service.ts` handles inquiries and reservations entirely in browser `sessionStorage`. Checkout drafts save after 400 ms. A successful demo reservation clears its draft and retains the entered traveler form and waiver version only in that browser session. Receipts omit personal traveler data. Closing the browser session clears local records.
-
-Payment is simulated. No card details are requested, no Stripe requests are made, and no message reaches Nomad Discovery Tours. The local reservation service checks capacity and reuses reservation IDs to prevent duplicate reservations. The CAD rate is an illustrative fixture, not a live exchange rate.
-
-The private `getJoinableGroups` service is unavailable; its fixture is empty. To test joining friends, add records to `services.mock.json`:
-
-```json
-{
-  "groupId": "local-demo-party",
-  "label": "Demo party",
-  "size": 2,
-  "spotsLeft": 3,
-  "departureId": "dep_3-day-song-kul-lake-ride_2026-11-13",
-  "includedGroupAddOns": ["Airport Pickup"]
-}
-```
-
-Only public content was imported. Customer identities, contacts, passports, private reservations, admin functions, internal commission splits, and production credentials were excluded. Future server integration can replace `lib/mock-service.ts` and the data imports without embedding network requests in page components.
-
-Source wording contains inconsistencies, deliberately preserved: passport timing is “at booking” on tour pages, “at least 2 weeks” at checkout, and “beforehand” in policies. Public records and manually scheduled dates may also disagree about the advertised season; existing occupied departures follow the source's live-departure rules. Review those business rules before enabling a real backend.
-
-Homepage curation: Custom Private Tour remains in the catalog and is excluded from featured tours. Testimonials and blog promotion are temporarily hidden by `site.visibility`; the underlying data and article routes remain available. Public contacts currently use WhatsApp +996 559 773283; source-company email and Instagram are not advertised.
+Run `scripts/verify-supabase.sql` in the Supabase SQL editor or an authorized SQL client.
+It verifies server pricing, required policies, idempotency, capacity, cancellation, receipt tokens and anonymous/nonstaff access.
+All its test data is inside a transaction that ends with `ROLLBACK`.

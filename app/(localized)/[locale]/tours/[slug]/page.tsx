@@ -1,27 +1,22 @@
-import { translate } from '@/lib/i18n';
 import type { Metadata } from 'next';
 import { notFound } from 'next/navigation';
+import { loadSiteData } from '@/lib/site-data';
+import { createCatalog } from '@/lib/catalog';
+import { translate } from '@/lib/i18n';
+import { isLocale } from '@/lib/content';
 import JourneyDetail from '@/components/JourneyDetail';
-import { content, isLocale, locales } from '@/lib/content';
-import { isTourSlug, tourBasics, tourSlugs } from '@/lib/tours';
-
-export function generateStaticParams() {
-  return locales.flatMap((locale) => tourSlugs.map((slug) => ({ locale, slug })));
-}
-
 export async function generateMetadata({ params }: { params: Promise<{ locale: string; slug: string }> }): Promise<Metadata> {
   const { locale, slug } = await params;
-  if (!isLocale(locale) || !isTourSlug(slug)) return {};
-  const tour = tourBasics(content[locale], slug);
-  return {
-    title: `${translate(locale, tour.title)} | Nomad Discovery Tours`,
-    description: translate(locale, tour.description),
-    alternates: { languages: Object.fromEntries(locales.map((language) => [language === 'ge' ? 'de' : language, `/${language}/tours/${slug}/`])) },
-  };
+  if (!isLocale(locale)) notFound();
+  const data = await loadSiteData();
+  const record = createCatalog(data).getTour(slug);
+  if (!record) return {};
+  return { title: `${translate(locale, record.title)} | Nomad Discovery Tours`, description: translate(locale, record.blurb) };
 }
-
-export default async function TourPage({ params }: { params: Promise<{ locale: string; slug: string }> }) {
+export default async function Page({ params }: { params: Promise<{ locale: string; slug: string }> }) {
   const { locale, slug } = await params;
-  if (!isLocale(locale) || !isTourSlug(slug)) notFound();
+  if (!isLocale(locale)) notFound();
+  const data = await loadSiteData();
+  if (!createCatalog(data).getTour(slug)) notFound();
   return <JourneyDetail locale={locale} slug={slug} />;
 }

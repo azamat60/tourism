@@ -1,22 +1,29 @@
 'use client';
 
-import { translate as t } from '@/lib/i18n';
+import { useCatalog, useTranslation } from './SiteData';
+
+
 
 import { useState, type FormEvent } from 'react';
 import type { Locale } from '@/lib/content';
-import { activeTours, getTour, shiftDate, validDate } from '@/lib/mock-data';
+import { shiftDate, validDate } from '@/lib/catalog';
 import { useBishkekDay, useBrowserQuery } from '@/lib/browser-state';
 import { localeHref } from '@/lib/links';
-import { storeInquiry } from '@/lib/mock-service';
-import { site } from '@/lib/mocks/site.mock';
+import { storeInquiry } from '@/lib/booking-service';
+
 
 export default function BookingForm({ locale }: { locale: Locale }) {
+  const { getTour } = useCatalog();
+
   const params = useBrowserQuery();
   const today = useBishkekDay();
   return <InquiryForm key={params.toString()} locale={locale} today={today} tour={getTour(params.get('tour') || '')?.title || params.get('tour') || ''} date={params.get('date') || ''} message={params.get('message') || ''} />;
 }
 
 function InquiryForm({ locale, today, tour, date, message }: { locale: Locale; today: string; tour: string; date: string; message: string }) {
+  const { activeTours, site } = useCatalog();
+  const t = useTranslation();
+
   const [error, setError] = useState('');
   const [pending, setPending] = useState(false);
   async function submit(event: FormEvent<HTMLFormElement>) {
@@ -28,9 +35,9 @@ function InquiryForm({ locale, today, tour, date, message }: { locale: Locale; t
     if (!validDate(value('date')) || value('date') < today || value('date') > shiftDate(today, 730)) { setError('Please select a date between today and 2 years from now.'); return; }
     setPending(true);
     try {
-      const id = storeInquiry({ name: value('name'), email: value('email'), whatsappNumber: value('whatsappNumber'), date: value('date'), tour: value('tour'), message: value('message') });
+      const id = await storeInquiry({ name: value('name'), email: value('email'), whatsappNumber: value('whatsappNumber'), date: value('date'), tour: value('tour'), message: value('message') });
       window.location.assign(localeHref(locale, `/success/?requestId=${id}`));
-    } catch { setError('Your request could not be saved in this browser. Please allow browser storage and try again.'); setPending(false); }
+    } catch { setError('Your request could not be saved. Please try again.'); setPending(false); }
   }
   return <div className="page-width booking-layout">
     <form className="booking-fields" onSubmit={submit}><div className="booking-heading"><h2>{t(locale, "Send us a message")}</h2></div><p>{t(locale, "Include the dates you're interested in, how many people are travelling and anything else we should know.")}</p>

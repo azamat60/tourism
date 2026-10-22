@@ -1,12 +1,16 @@
 'use client';
 
-import { translate as t } from '@/lib/i18n';
+import { useTranslation } from './SiteData';
+
+
 
 import type { Locale } from '@/lib/content';
 
 import { useEffect, useRef } from 'react';
 
 export default function SignaturePad({ label, value, onChange, locale = 'en' }: { locale?: Locale; label: string; value: string; onChange: (value: string) => void }) {
+  const t = useTranslation();
+
   const canvas = useRef<HTMLCanvasElement>(null);
   const drawing = useRef(false);
   useEffect(() => {

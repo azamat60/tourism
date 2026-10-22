@@ -1,6 +1,6 @@
-import { pageMetadata } from '@/lib/page-metadata';
+import { localizedPageMetadata } from '@/lib/page-metadata';
 import type { Metadata } from 'next';
 import BookingPage from '@/components/BookingPage';
 
-export const metadata = pageMetadata.booking;
+export async function generateMetadata() { return localizedPageMetadata('booking'); }
 export default function Page() { return <BookingPage locale="en" />; }

@@ -1,11 +1,13 @@
 'use client';
 
-import { bookedCount, formatCount, translate as t } from '@/lib/i18n';
+import { useCatalog, useTranslation } from './SiteData';
+
+import { bookedCount, formatCount } from '@/lib/i18n';
 
 import { useState } from 'react';
 import type { Locale } from '@/lib/content';
-import type { Departure } from '@/lib/mock-types';
-import { departuresFor, formatDate, getTour, openDepartures, shiftDate, tierValue } from '@/lib/mock-data';
+import type { Departure } from '@/lib/types';
+import { formatDate, shiftDate, tierValue } from '@/lib/catalog';
 import { useBishkekDay } from '@/lib/browser-state';
 import { localeHref } from '@/lib/links';
 
@@ -17,6 +19,8 @@ export function reservationHref(locale: Locale, departure: Departure) {
 }
 
 function DepartureCard({ departure, locale, selected }: { departure: Departure; locale: Locale; selected: boolean }) {
+  const t = useTranslation();
+
   const full = departure.booked >= departure.capacity;
   const value = price(departure);
   const inquiry = localeHref(locale, `/booking/?tour=${departure.slug}&date=${departure.start}`);
@@ -30,6 +34,8 @@ function DepartureCard({ departure, locale, selected }: { departure: Departure; 
 }
 
 function Calendar({ departures, today, selected, onSelect, locale }: { locale: Locale; departures: Departure[]; today: string; selected: string; onSelect: (id: string) => void }) {
+  const t = useTranslation();
+
   const [month, setMonth] = useState(today.slice(0, 7));
   const [expanded, setExpanded] = useState(true);
   const first = `${month}-01`;
@@ -51,6 +57,9 @@ function Calendar({ departures, today, selected, onSelect, locale }: { locale: L
 }
 
 export default function DepartureExplorer({ locale, tourSlug }: { locale: Locale; tourSlug?: string }) {
+  const { departuresFor, getTour, openDepartures } = useCatalog();
+  const t = useTranslation();
+
   const today = useBishkekDay();
   const tour = tourSlug ? getTour(tourSlug) : undefined;
   const source = tour ? departuresFor(tour, new Date(`${today}T12:00:00Z`)) : openDepartures(new Date(`${today}T12:00:00Z`));
@@ -82,7 +91,7 @@ export default function DepartureExplorer({ locale, tourSlug }: { locale: Locale
     <div className="source-toolbar"><label className="source-check"><input type="checkbox" checked={hideEmpty} onChange={(event) => setHideEmpty(event.target.checked)} />{t(locale, "Hide empty departures")}</label><label className="source-check"><input type="checkbox" checked={hideFull} onChange={(event) => setHideFull(event.target.checked)} />{t(locale, "Hide fully booked")}</label><button onClick={reset}>{t(locale, "Clear filters")}</button><span role="status">{formatCount(locale, filtered.length, 'departure')}</span></div>
     {!tour && <Calendar locale={locale} departures={filtered} today={today} selected={selected} onSelect={select} />}
     {filtered.length ? <><div className="source-departure-list">{filtered.filter((item) => item.booked < item.capacity).slice(0, visible).map((item) => <DepartureCard key={item.id} departure={item} locale={locale} selected={selected === item.id} />)}</div>{filtered.some((item) => item.booked >= item.capacity) && <><h3>{t(locale, "Fully booked tours")}</h3>{filtered.filter((item) => item.booked >= item.capacity).map((item) => <DepartureCard key={item.id} departure={item} locale={locale} selected={selected === item.id} />)}</>}{filtered.length > visible && <button className="source-action" onClick={() => setVisible(filtered.length)}>{t(locale, "Show all departures")}</button>}</> : <div className="source-empty"><h3>{t(locale, "No departures match your filters.")}</h3><p>{t(locale, "Ask us about other dates or a private tour.")}</p><a className="button button-dark" href={localeHref(locale, `/booking/${tour ? `?tour=${tour.slug}` : ''}`)}>{t(locale, "Plan your trip")}</a></div>}
-    <p className="source-note">{t(locale, "Prices and spaces reflect the saved website snapshot. Availability is not updated live.")}</p>
+    <p className="source-note">{t(locale, "Availability is checked again when you submit your reservation.")}</p>
     {tour && <p>{t(locale, "Bookings close ")}{t(locale, tour.bookingCutoffDays || 2)} {t(locale, " days before departure. Tour dates use ")}{t(locale, tour.timeZone || 'Asia/Bishkek')} {t(locale, " time.")}</p>}
     <a className="text-link" href={localeHref(locale, `/booking/?tour=${tour?.slug || ''}&date=${shiftDate(today, 7)}`)}>{t(locale, "Need another date? Contact us")}</a>
   </div>;

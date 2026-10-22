@@ -1,12 +1,14 @@
 'use client';
 
-import { translate as t } from '@/lib/i18n';
+import { useCatalog, useTranslation } from './SiteData';
+
+
 
 import type { Locale } from '@/lib/content';
 
 import Image from 'next/image';
 import { useState, useSyncExternalStore } from 'react';
-import { site } from '@/lib/mocks/site.mock';
+
 
 function subscribe(callback: () => void) {
   const query = window.matchMedia('(min-width: 800px) and (prefers-reduced-motion: no-preference)');
@@ -14,6 +16,9 @@ function subscribe(callback: () => void) {
   return () => query.removeEventListener('change', callback);
 }
 export default function HeroMedia({ locale = 'en' }: { locale?: Locale }) {
+  const { site } = useCatalog();
+  const t = useTranslation();
+
   const [failed, setFailed] = useState(false);
   const [loaded, setLoaded] = useState(false);
   const video = useSyncExternalStore(subscribe, () => window.matchMedia('(min-width: 800px) and (prefers-reduced-motion: no-preference)').matches, () => false);

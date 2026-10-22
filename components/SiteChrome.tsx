@@ -1,13 +1,15 @@
+'use client';
 
-import { translate as t } from '@/lib/i18n';
+import { useCatalog, useTranslation } from './SiteData';
+
+
 import type { ReactNode } from 'react';
 import LanguageLink from './LanguageLink';
 import type { Copy, Locale } from '@/lib/content';
 import { languageNames, locales } from '@/lib/content';
 import { localeHref, whatsappLink } from '@/lib/links';
-import { site } from '@/lib/mocks/site.mock';
 
-const navigation = site.navigation.filter((item) => site.visibility.blog || item.path !== '/blog/');
+
 
 export { localeHref, whatsappLink } from '@/lib/links';
 
@@ -43,6 +45,10 @@ export function WhatsAppIcon() {
 }
 
 function Header({ locale, copy, path }: { locale: Locale; copy: Copy; path: string }) {
+  const { site } = useCatalog();
+  const navigation = site.navigation.filter((item) => site.visibility.blog || item.path !== '/blog/');
+  const t = useTranslation();
+
   const home = localeHref(locale);
   const plan = localeHref(locale, '/booking/');
 
@@ -76,15 +82,20 @@ function Header({ locale, copy, path }: { locale: Locale; copy: Copy; path: stri
 }
 
 function Footer({ locale, copy }: { locale: Locale; copy: Copy }) {
+  const { site, activeTours } = useCatalog();
+  const navigation = site.navigation.filter((item) => site.visibility.blog || item.path !== '/blog/');
+  const t = useTranslation();
+
   const home = localeHref(locale);
 
   return (
-    <footer className="footer"><div className="page-width"><div className="footer-main"><div><a className="brand footer-brand" href={home}><MountainMark /><BrandName /></a><p>{t(locale, site.description)}</p></div><div className="footer-links"><div><h3>{t(locale, "Explore")}</h3>{navigation.map((item) => <a key={item.path} href={localeHref(locale, item.path)}>{t(locale, item.label)}</a>)}</div><div><h3>{t(locale, "Popular tours")}</h3>{[['2-day-song-kul-lake-ride', '2-Day Song-Kul Lake Ride'], ['3-day-song-kul-lake-ride', '3-Day Song-Kul Lake Ride'], ['5-day-song-kul-kel-suu', '5-Day Song-Kul & Kel-Suu'], ['custom-private-tour', 'Custom Private Tour']].map(([slug, title]) => <a key={slug} href={localeHref(locale, `/tours/${slug}/`)}>{t(locale, title)}</a>)}</div><div><h3>{t(locale, "Get in touch")}</h3><a href={localeHref(locale, '/booking/')}>{t(locale, "Plan your trip")}</a><a href={`tel:+${site.whatsappNumber}`}>{t(locale, site.phone)}</a>{site.email && <a href={`mailto:${site.email}`}>{t(locale, site.email)}</a>}{site.instagram && <a href={site.instagram} target="_blank" rel="noopener noreferrer">{t(locale, "Instagram")}</a>}<a href={whatsappLink(copy.inquiryMessage)} target="_blank" rel="noopener noreferrer">{t(locale, "WhatsApp")}</a></div></div></div><div className="footer-bottom"><span>© {t(locale, new Date().getFullYear())} {t(locale, site.name)}{t(locale, ". All rights reserved.")}</span><span>{t(locale, "KYRGYZSTAN · All prices in USD")}</span></div></div></footer>
+    <footer className="footer"><div className="page-width"><div className="footer-main"><div><a className="brand footer-brand" href={home}><MountainMark /><BrandName /></a><p>{t(locale, site.description)}</p></div><div className="footer-links"><div><h3>{t(locale, "Explore")}</h3>{navigation.map((item) => <a key={item.path} href={localeHref(locale, item.path)}>{t(locale, item.label)}</a>)}</div><div><h3>{t(locale, "Popular tours")}</h3>{activeTours.slice(0,4).map(({slug,title}) => <a key={slug} href={localeHref(locale, `/tours/${slug}/`)}>{t(locale, title)}</a>)}</div><div><h3>{t(locale, "Get in touch")}</h3><a href={localeHref(locale, '/booking/')}>{t(locale, "Plan your trip")}</a><a href={`tel:+${site.whatsappNumber}`}>{t(locale, site.phone)}</a>{site.email && <a href={`mailto:${site.email}`}>{t(locale, site.email)}</a>}{site.instagram && <a href={site.instagram} target="_blank" rel="noopener noreferrer">{t(locale, "Instagram")}</a>}<a href={whatsappLink(copy.inquiryMessage, site.whatsappNumber)} target="_blank" rel="noopener noreferrer">{t(locale, "WhatsApp")}</a></div></div></div><div className="footer-bottom"><span>© {t(locale, new Date().getFullYear())} {t(locale, site.name)}{t(locale, ". All rights reserved.")}</span><span>{t(locale, "KYRGYZSTAN · All prices in USD")}</span></div></div></footer>
   );
 }
 
 function FloatingWhatsApp({ copy }: { copy: Copy }) {
-  return <a className="floating-whatsapp" href={whatsappLink(copy.inquiryMessage)} target="_blank" rel="noopener noreferrer" aria-label={copy.whatsapp}><WhatsAppIcon /><span>WhatsApp</span></a>;
+ const {site} = useCatalog();
+  return <a className="floating-whatsapp" href={whatsappLink(copy.inquiryMessage, site.whatsappNumber)} target="_blank" rel="noopener noreferrer" aria-label={copy.whatsapp}><WhatsAppIcon /><span>WhatsApp</span></a>;
 }
 
 export default function SiteChrome({ locale, copy, path = '/', children }: {
@@ -93,5 +104,7 @@ export default function SiteChrome({ locale, copy, path = '/', children }: {
   path?: string;
   children: ReactNode;
 }) {
+  const t = useTranslation();
+
   return <div className="site-shell" dir={locale === 'ar' ? 'rtl' : 'ltr'}><a className="skip-link" href="#main-content">{t(locale, "Skip to content")}</a><Header locale={locale} copy={copy} path={path} /><main id="main-content">{children}</main><Footer locale={locale} copy={copy} /><FloatingWhatsApp copy={copy} /></div>;
 }
