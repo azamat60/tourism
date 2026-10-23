@@ -1,5 +1,5 @@
 "use client";
-import Image from "next/image";
+import Image from "../SiteImage";
 import { useState } from "react";
 import { STATUS_LABEL } from "./admin.constants";
 export type Operation = {

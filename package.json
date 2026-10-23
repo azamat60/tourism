@@ -7,8 +7,12 @@
     "build": "next build",
     "start": "next start",
     "lint": "eslint .",
-    "test": "node --test scripts/verify-content.cjs scripts/verify-locales.cjs",
-    "test:server": "node scripts/verify-server.cjs"
+    "test": "node --test scripts/verify-content.cjs scripts/verify-locales.cjs scripts/verify-seo.cjs scripts/verify-admin-delete.cjs",
+    "test:server": "node scripts/verify-server.cjs",
+    "test:seo": "node scripts/verify-seo-server.cjs",
+    "build:cloudflare": "opennextjs-cloudflare build",
+    "preview:cloudflare": "opennextjs-cloudflare preview",
+    "deploy:cloudflare": "opennextjs-cloudflare deploy"
   },
   "dependencies": {
     "@supabase/ssr": "0.12.7",
@@ -20,6 +24,7 @@
     "zod": "4.6.7"
   },
   "devDependencies": {
+    "@opennextjs/cloudflare": "1.20.13",
     "@types/leaflet": "^1.9.22",
     "@types/node": "^22.18.6",
     "@types/react": "^19.1.13",
@@ -28,6 +33,7 @@
     "eslint-config-next": "16.4.2",
     "prettier": "3.9.10",
     "supabase": "2.121.0",
-    "typescript": "^5.9.2"
+    "typescript": "^5.9.2",
+    "wrangler": "4.151.3"
   }
 }

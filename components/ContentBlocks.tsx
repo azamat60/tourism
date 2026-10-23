@@ -4,7 +4,7 @@ import { useCatalog, useTranslation } from './SiteData';
 
 
 import type { ElementType } from 'react';
-import Image from 'next/image';
+import Image from './SiteImage';
 import { startingPrice } from '@/lib/catalog';
 import type { Tour } from '@/lib/types';
 import type { Locale } from '@/lib/content';

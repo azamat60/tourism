@@ -6,7 +6,7 @@ import { formatCount } from '@/lib/i18n';
 
 import type { Locale } from '@/lib/content';
 
-import Image from 'next/image';
+import Image from './SiteImage';
 import { useEffect, useRef, useState } from 'react';
 
 import TourIcon from './TourIcon';

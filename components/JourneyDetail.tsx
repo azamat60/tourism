@@ -3,7 +3,8 @@
 import { useCatalog, useTranslation } from './SiteData';
 
 
-import Image from 'next/image';
+import Image from './SiteImage';
+import Breadcrumbs from './Breadcrumbs';
 import SiteChrome, { ArrowIcon, localeHref } from './SiteChrome';
 import { PageHero, TourCard } from './ContentBlocks';
 import DepartureExplorer from './DepartureExplorer';
@@ -23,6 +24,7 @@ export default function JourneyDetail({ locale, slug }: { locale: Locale; slug: 
   const photos = [...new Set([...(tour.carousel_images || []), ...(tour.images || []), tour.image])];
   return <SiteChrome locale={locale} copy={content[locale]} path={`/tours/${tour.slug}/`}>
     <PageHero locale={locale} label={t(locale, tour.category || 'Kyrgyzstan')} title={t(locale, tour.title)} description={t(locale, tour.blurb)} image={asset(tour.image)} />
+    <Breadcrumbs locale={locale} parent="tours" title={t(locale, tour.title)} />
     <TourBookingBar tour={tour} locale={locale} />
     <section className="detail-overview page-width"><div className="detail-intro"><p className="eyebrow dark">{t(locale, "Overview")}</p><h2>{t(locale, tourPage.aboutTitle)}</h2><p className="source-preline">{t(locale, introduction(tour))}</p>{tour.importantNotes && <p className="source-preline source-notice">{t(locale, tour.importantNotes)}</p>}<a className="text-link" href={localeHref(locale, `/booking/?tour=${tour.slug}`)}>{t(locale, "Ask about this tour")}<ArrowIcon diagonal /></a></div><div className="detail-photo-pair"><div><Image src={asset(photos[0])} alt={t(locale, tour.title)} width={1448} height={1086} sizes="50vw" /></div><div><Image src={asset(photos[1] || tour.image)} alt={t(locale, tour.locations.join(', '))} width={1448} height={1086} sizes="30vw" /></div></div></section>
     <section className="section-pad page-width tour-essentials"><TourFacts locale={locale} tour={tour} />{tour.horse && <p className="riding-note">{t(locale, tourPage.ridingNote)}</p>}{tour.passportNeeded && <p className="source-notice"><strong>{t(locale, "Passport required: ")}</strong>{t(locale, tourPage.passportNote)}</p>}</section>

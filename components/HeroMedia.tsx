@@ -6,7 +6,7 @@ import { useCatalog, useTranslation } from './SiteData';
 
 import type { Locale } from '@/lib/content';
 
-import Image from 'next/image';
+import Image from './SiteImage';
 import { useState, useSyncExternalStore } from 'react';
 
 

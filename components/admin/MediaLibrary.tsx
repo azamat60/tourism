@@ -1,5 +1,5 @@
 "use client";
-import Image from "next/image";
+import Image from "../SiteImage";
 import { useEffect, useState, type ChangeEvent } from "react";
 type Media = { id: string; name: string; url: string };
 export default function MediaLibrary() {

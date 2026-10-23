@@ -99,3 +99,11 @@ Set `SITE_URL` to target a different running server.
 Run `scripts/verify-supabase.sql` in the Supabase SQL editor or an authorized SQL client.
 It verifies server pricing, required policies, idempotency, capacity, cancellation, receipt tokens and anonymous/nonstaff access.
 All its test data is inside a transaction that ends with `ROLLBACK`.
+
+## SEO
+
+Production canonical origin is `https://nomaddiscoverytours.com`; override it with `NEXT_PUBLIC_SITE_URL`.
+Set `SEO_INDEXING_ENABLED=false` on staging. Vercel preview deployments are automatically noindex.
+Optional `GOOGLE_SITE_VERIFICATION` and `YANDEX_SITE_VERIFICATION` values add verification tags.
+See [SEO setup, keyword targets and launch steps](docs/SEO.md).
+Run `npm run test:seo` against a running server (`SITE_URL=http://localhost:3002` to change its address).

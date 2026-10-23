@@ -1,3 +1,4 @@
+import { tourAliases } from './route-aliases';
 import type {
   AddOn,
   BlogPost,
@@ -165,11 +166,7 @@ export function createCatalog(data: {
 }) {
   const { tours, publicDepartures, blogPosts, assets } = data;
   const activeTours = tours.filter((tour) => tour.active !== false);
-  const tourAliases: Record<string, string> = {
-    "song-kul-escape": "3-day-song-kul-lake-ride",
-    "kel-suu-wilderness": "5-day-song-kul-kel-suu",
-    "nomad-trail": "9-day-song-kul-kel-suu-issyk-kul-skazka-karakol-altyn",
-  };
+
   const locationCoordinates: Record<string, [number, number]> = {
     "Song-Kul": [41.822, 75.137],
     "Kel-Suu": [40.598, 76.365],

@@ -8,6 +8,7 @@ import ContentEditor from "./ContentEditor";
 import Operations, { type Operation } from "./Operations";
 import MediaLibrary from "./MediaLibrary";
 import { KIND_LABEL } from "./admin.constants";
+import { deleteDepartures, departureLabel } from "./departure-actions";
 type Tab = "overview" | EntryKind | "inquiries" | "bookings" | "media";
 const TABS: Record<Tab, string> = {
   overview: "Обзор",
@@ -114,9 +115,16 @@ export default function AdminDashboard({
   const [filter, setFilter] = useState("all");
   const [selected, setSelected] = useState<ContentEntry | null>(null);
   const [limit, setLimit] = useState(40);
+  const [checkedIds, setCheckedIds] = useState<string[]>([]);
+  const [deleting, setDeleting] = useState(false);
+  const [bulkFailures, setBulkFailures] = useState<
+    Awaited<ReturnType<typeof deleteDepartures>>["failed"]
+  >([]);
   const contentAccess = role === "admin" || role === "editor";
   const operationsAccess = role === "admin" || role === "manager";
   const load = useCallback(async () => {
+    setCheckedIds([]);
+    setBulkFailures([]);
     try {
       const paths = [
         ...(contentAccess ? ["/api/admin/content/"] : []),
@@ -164,6 +172,8 @@ export default function AdminDashboard({
     setLimit(40);
     setFilter("all");
     setNotice("");
+    setCheckedIds([]);
+    setBulkFailures([]);
     window.history.replaceState(null, "", `/admin/?tab=${next}`);
   };
   const kinds = entries.filter((entry) => entry.kind === tab);
@@ -180,6 +190,40 @@ export default function AdminDashboard({
         .toLowerCase()
         .includes(search.toLowerCase()),
   );
+  const visibleEntries = filtered.slice(0, limit);
+  const checkedEntries = visibleEntries.filter((entry) =>
+    checkedIds.includes(entry.id),
+  );
+  const allChecked =
+    visibleEntries.length > 0 &&
+    checkedEntries.length === visibleEntries.length;
+  async function removeChecked() {
+    if (!checkedEntries.length || deleting) return;
+    const preview = checkedEntries.slice(0, 5).map(departureLabel).join("\n");
+    const remainder =
+      checkedEntries.length > 5 ? `\nИ ещё: ${checkedEntries.length - 5}` : "";
+    if (
+      !window.confirm(
+        `Удалить выбранные выезды: ${checkedEntries.length}?\n\n${preview}${remainder}\n\nВосстановить записи будет невозможно. Выезды с бронированиями останутся.`,
+      )
+    )
+      return;
+    setDeleting(true);
+    setNotice("");
+    setError("");
+    setBulkFailures([]);
+    try {
+      const { deleted, failed } = await deleteDepartures(checkedEntries);
+      setEntries((current) =>
+        current.filter((entry) => !deleted.includes(entry.id)),
+      );
+      setCheckedIds(failed.map((item) => item.id));
+      setBulkFailures(failed);
+      setNotice(`Удалено: ${deleted.length}. Не удалено: ${failed.length}.`);
+    } finally {
+      setDeleting(false);
+    }
+  }
   const tours = entries.filter((entry) => entry.kind === "tour");
   const upcoming = entries
     .filter(
@@ -220,6 +264,7 @@ export default function AdminDashboard({
           {menu.map((item) => (
             <button
               key={item}
+              disabled={deleting}
               className={tab === item ? "active" : ""}
               onClick={() => navigate(item)}
             >
@@ -281,6 +326,7 @@ export default function AdminDashboard({
             </div>
             <button
               className="admin-subtle"
+              disabled={deleting}
               onClick={() => {
                 setLoading(true);
                 void load();
@@ -455,15 +501,23 @@ export default function AdminDashboard({
                       aria-label="Поиск контента"
                       placeholder="Название, маршрут или дата…"
                       value={search}
+                      disabled={deleting}
                       onChange={(event) => {
                         setSearch(event.target.value);
                         setLimit(40);
+                        setCheckedIds([]);
+                        setBulkFailures([]);
                       }}
                     />
                     <select
                       aria-label="Публикация"
                       value={filter}
-                      onChange={(event) => setFilter(event.target.value)}
+                      disabled={deleting}
+                      onChange={(event) => {
+                        setFilter(event.target.value);
+                        setCheckedIds([]);
+                        setBulkFailures([]);
+                      }}
                     >
                       <option value="all">Все записи</option>
                       <option value="published">Опубликованные</option>
@@ -472,6 +526,7 @@ export default function AdminDashboard({
                     {["tour", "departure", "post", "faq"].includes(tab) && (
                       <button
                         className="admin-primary"
+                        disabled={deleting}
                         onClick={() =>
                           setSelected(makeEntry(tab as EntryKind, entries))
                         }
@@ -480,10 +535,71 @@ export default function AdminDashboard({
                       </button>
                     )}
                   </div>
+                  {tab === "departure" && (
+                    <div className="admin-bulk-actions" aria-busy={deleting}>
+                      <span role="status">
+                        {deleting
+                          ? `Удаляю выезды: ${checkedEntries.length}…`
+                          : `Выбрано: ${checkedEntries.length}`}
+                      </span>
+                      <button
+                        className="admin-subtle"
+                        disabled={deleting || !checkedEntries.length}
+                        onClick={() => setCheckedIds([])}
+                      >
+                        Снять выбор
+                      </button>
+                      <button
+                        className="admin-subtle admin-danger"
+                        disabled={deleting || !checkedEntries.length}
+                        onClick={removeChecked}
+                      >
+                        Удалить выбранные
+                      </button>
+                      <small>
+                        Галочка в заголовке выбирает все показанные строки.
+                        Поиск и фильтр сбрасывают выбор.
+                      </small>
+                    </div>
+                  )}
+                  {bulkFailures.length > 0 && (
+                    <div className="admin-error" role="alert">
+                      <strong>Не удалось удалить:</strong>
+                      <ul>
+                        {bulkFailures.map((item) => (
+                          <li key={item.id}>
+                            {item.label}: {item.error}
+                          </li>
+                        ))}
+                      </ul>
+                    </div>
+                  )}
                   <div className="admin-table-wrap">
                     <table className="admin-table">
                       <thead>
                         <tr>
+                          {tab === "departure" && (
+                            <th className="admin-selection-cell">
+                              <input
+                                type="checkbox"
+                                aria-label="Выбрать все показанные выезды"
+                                disabled={deleting || !visibleEntries.length}
+                                checked={allChecked}
+                                ref={(node) => {
+                                  if (node)
+                                    node.indeterminate =
+                                      checkedEntries.length > 0 && !allChecked;
+                                }}
+                                onChange={(event) =>
+                                  setCheckedIds(
+                                    event.target.checked
+                                      ? visibleEntries.map((entry) => entry.id)
+                                      : [],
+                                  )
+                                }
+                              />
+                            </th>
+                          )}
                           <th>{tab === "departure" ? "Выезд" : "Название"}</th>
                           <th>
                             {tab === "departure" ? "Места" : "Адрес / ключ"}
@@ -494,8 +610,35 @@ export default function AdminDashboard({
                         </tr>
                       </thead>
                       <tbody>
-                        {filtered.slice(0, limit).map((entry) => (
-                          <tr key={entry.id}>
+                        {visibleEntries.map((entry) => (
+                          <tr
+                            key={entry.id}
+                            className={
+                              tab === "departure" &&
+                              checkedIds.includes(entry.id)
+                                ? "admin-row-selected"
+                                : undefined
+                            }
+                          >
+                            {tab === "departure" && (
+                              <td className="admin-selection-cell">
+                                <input
+                                  type="checkbox"
+                                  aria-label={`Выбрать выезд ${departureLabel(entry)}`}
+                                  disabled={deleting}
+                                  checked={checkedIds.includes(entry.id)}
+                                  onChange={(event) =>
+                                    setCheckedIds((current) =>
+                                      event.target.checked
+                                        ? [...current, entry.id]
+                                        : current.filter(
+                                            (id) => id !== entry.id,
+                                          ),
+                                    )
+                                  }
+                                />
+                              </td>
+                            )}
                             <td>
                               <strong>
                                 {String(
@@ -537,6 +680,7 @@ export default function AdminDashboard({
                             <td>
                               <button
                                 className="admin-subtle"
+                                disabled={deleting}
                                 onClick={() => setSelected(entry)}
                               >
                                 Изменить ↗
@@ -561,6 +705,7 @@ export default function AdminDashboard({
                     {filtered.length > limit && (
                       <button
                         className="admin-subtle"
+                        disabled={deleting}
                         onClick={() => setLimit(limit + 40)}
                       >
                         Показать ещё
@@ -582,6 +727,12 @@ export default function AdminDashboard({
           key={selected.id}
           entry={selected}
           onClose={() => setSelected(null)}
+          onDeleted={(id) => {
+            setEntries((current) => current.filter((entry) => entry.id !== id));
+            setCheckedIds((current) => current.filter((item) => item !== id));
+            setSelected(null);
+            setNotice("Выезд удалён. Данные сайта обновлены.");
+          }}
           onSaved={() => {
             setSelected(null);
             setNotice("Сохранено. Данные сайта обновлены.");

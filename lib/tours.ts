@@ -1,3 +1,4 @@
+import { postAliases } from './route-aliases';
 import type { Copy } from './content';
 import { createCatalog, durationDays } from './catalog';
 import type { SiteData } from './site-types';
@@ -8,8 +9,8 @@ export function createTourHelpers(data: SiteData) {
   const tourConfig = Object.fromEntries(activeTours.map((tour, index) => [tour.slug, {
     days: durationDays(tour), nights: Math.max(0, durationDays(tour) - 1), image: asset(tour.image), number: String(index + 1).padStart(2, '0'),
   }]));
-  const aliases: Record<string, string> = { 'packing-for-the-highlands': 'packing-tips-trek', 'a-night-in-a-yurt': 'yurt-life-nomads', 'your-first-horse-trek': 'horse-trekking-kyrgyzstan' };
-  const getPost = (slug: string) => blogPosts.find((post) => post.slug === (aliases[slug] || slug));
+
+  const getPost = (slug: string) => blogPosts.find((post) => post.slug === (postAliases[slug] || slug));
   function tourBasics(_copy: Copy, slug: string) {
     const tour = getTour(slug)!;
     return { title: tour.title, place: tour.locations.join(', '), tag: tour.category || '', description: tour.blurb,

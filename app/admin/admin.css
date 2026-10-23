@@ -295,6 +295,13 @@ button {
 .admin-primary:hover {
   background: #295442;
 }
+.admin-danger {
+  color: #a52b2b;
+  border-color: #e8c6c6;
+}
+.admin-danger:hover:not(:disabled) {
+  background: #fff1f1;
+}
 .admin-stats {
   display: grid;
   grid-template-columns: repeat(4, 1fr);
@@ -514,6 +521,43 @@ button {
 }
 .admin-table tr:hover td {
   background: #fcfdf9;
+}
+.admin-bulk-actions {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 12px;
+  margin-bottom: 18px;
+  padding: 14px 18px;
+  border: 1px solid var(--line);
+  border-radius: 10px;
+  background: #fff;
+}
+.admin-bulk-actions > span {
+  margin-right: auto;
+  font-size: 12px;
+  font-weight: 700;
+}
+.admin-bulk-actions > small {
+  flex-basis: 100%;
+  color: var(--muted);
+  line-height: 1.6;
+}
+.admin-table .admin-selection-cell {
+  width: 48px;
+  padding-right: 0;
+}
+.admin-selection-cell input {
+  width: 18px;
+  height: 18px;
+  padding: 0;
+  vertical-align: middle;
+  cursor: pointer;
+  accent-color: var(--forest);
+}
+.admin-table .admin-row-selected td,
+.admin-table .admin-row-selected:hover td {
+  background: #f0f5e6;
 }
 .admin-badge {
   display: inline-block;

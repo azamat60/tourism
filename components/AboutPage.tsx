@@ -3,7 +3,7 @@
 import { useCatalog, useTranslation } from './SiteData';
 
 
-import Image from 'next/image';
+import Image from './SiteImage';
 import SiteChrome, { localeHref } from './SiteChrome';
 import { ContentBlocks, PageHero } from './ContentBlocks';
 import { content, type Locale } from '@/lib/content';

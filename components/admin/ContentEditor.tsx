@@ -7,14 +7,17 @@ export default function ContentEditor({
   entry,
   onClose,
   onSaved,
+  onDeleted,
 }: {
   entry: ContentEntry;
   onClose: () => void;
   onSaved: (entry: ContentEntry) => void;
+  onDeleted: (id: string) => void;
 }) {
   const [draft, setDraft] = useState(entry);
   const [locale, setLocale] = useState("en");
   const [pending, setPending] = useState(false);
+  const [deleting, setDeleting] = useState(false);
   const [error, setError] = useState("");
   const [dirty, setDirty] = useState(false);
   const value = (
@@ -32,12 +35,48 @@ export default function ContentEditor({
     );
   };
   const close = () => {
+    if (pending || deleting) return;
     if (
       !dirty ||
       window.confirm("Есть несохранённые изменения. Закрыть редактор?")
     )
       onClose();
   };
+  async function remove() {
+    const name = String(entry.data.tourName || entry.slug);
+    const date = String(entry.data.startDate || "").slice(0, 10);
+    if (
+      !window.confirm(
+        `Удалить выезд «${name}» (${date})? Восстановить запись будет невозможно.`,
+      )
+    )
+      return;
+    setDeleting(true);
+    setError("");
+    try {
+      const response = await fetch("/api/admin/content/", {
+        method: "DELETE",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ id: entry.id, version: entry.version }),
+      });
+      const result = await response.json();
+      if (!response.ok)
+        throw new Error(
+          result.error === "CONFLICT"
+            ? "Запись уже изменена или удалена. Закройте редактор и обновите список."
+            : result.error,
+        );
+      onDeleted(entry.id);
+    } catch (failure) {
+      setError(
+        failure instanceof Error
+          ? failure.message
+          : "Не удалось удалить выезд.",
+      );
+    } finally {
+      setDeleting(false);
+    }
+  }
   async function save() {
     setPending(true);
     setError("");
@@ -97,6 +136,7 @@ export default function ContentEditor({
             type="button"
             className="admin-close"
             aria-label="Закрыть редактор"
+            disabled={pending || deleting}
             onClick={close}
           >
             ×
@@ -153,13 +193,28 @@ export default function ContentEditor({
           <span>
             {dirty ? "Есть несохранённые изменения" : "Все изменения сохранены"}
           </span>
-          <button type="button" className="admin-subtle" onClick={close}>
+          {entry.kind === "departure" && entry.version > 0 && (
+            <button
+              type="button"
+              className="admin-subtle admin-danger"
+              disabled={pending || deleting}
+              onClick={remove}
+            >
+              {deleting ? "Удаляю…" : "Удалить выезд"}
+            </button>
+          )}
+          <button
+            type="button"
+            className="admin-subtle"
+            disabled={pending || deleting}
+            onClick={close}
+          >
             Отмена
           </button>
           <button
             type="button"
             className="admin-primary"
-            disabled={pending}
+            disabled={pending || deleting}
             onClick={save}
           >
             {pending ? "Сохраняю…" : "Сохранить изменения"}

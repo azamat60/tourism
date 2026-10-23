@@ -1,4 +1,4 @@
-import type { Json } from '@/lib/supabase/database.types';
+import type { Json } from "@/lib/supabase/database.types";
 import { NextResponse } from "next/server";
 import { requireStaff } from "@/lib/admin/auth";
 import {
@@ -19,6 +19,37 @@ export async function GET() {
     return NextResponse.json(data, {
       headers: { "Cache-Control": "private, no-store" },
     });
+  } catch (error) {
+    return apiError(error);
+  }
+}
+export async function DELETE(request: Request) {
+  try {
+    sameOrigin(request);
+    const { supabase } = await requireStaff(["admin", "editor"]);
+    const input = entryInput
+      .pick({ id: true, version: true })
+      .parse(await jsonBody(request));
+    if (input.version < 1) throw new Error("CONFLICT");
+    const { data, error } = await supabase
+      .from("tourism_content")
+      .delete()
+      .eq("id", input.id)
+      .eq("kind", "departure")
+      .eq("version", input.version)
+      .select("id")
+      .maybeSingle();
+    if (error?.code === "23503")
+      return NextResponse.json(
+        {
+          error:
+            "У выезда есть бронирования. Чтобы скрыть его с сайта, снимите «Опубликовано» и сохраните изменения.",
+        },
+        { status: 409 },
+      );
+    if (error) throw error;
+    if (!data) throw new Error("CONFLICT");
+    return NextResponse.json(data);
   } catch (error) {
     return apiError(error);
   }
@@ -51,7 +82,12 @@ export async function POST(request: Request) {
         throw new Error("Cannot create this content kind.");
       const { data, error } = await supabase
         .from("tourism_content")
-        .insert({ ...input, data: input.data as Json, translations: input.translations as Json, version: 1 })
+        .insert({
+          ...input,
+          data: input.data as Json,
+          translations: input.translations as Json,
+          version: 1,
+        })
         .select()
         .single();
       if (error) throw error;

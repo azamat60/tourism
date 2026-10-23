@@ -4,7 +4,7 @@ import { useCatalog, useTranslation } from './SiteData';
 
 
 
-import Image from 'next/image';
+import Image from './SiteImage';
 import { useState, type FormEvent } from 'react';
 import SiteChrome from './SiteChrome';
 import { ContentBlocks, PageHero } from './ContentBlocks';
